@@ -34,9 +34,6 @@ import ViewSales from './Pages/Pharmacist/ViewSales';
 import ViewSalesAdmin from './Pages/Admin/ViewSalesAdmin';
 import ViewMedPrescription from './Pages/Patient/ViewMedPrescription';
 import Alternatives from './Pages/Patient/Alternatives';
-import ChatApp from './Pages/Patient/ChatApp';
-import ChatAppP from './Pages/Pharmacist/ChatAppP';
-import ChatAppD from './Pages/Pharmacist/ChatAppD';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -89,8 +86,6 @@ root.render(
         <Route path="/ViewMedPharm" element={<ViewMedPharmCopy />} />
         <Route path="/changePassword" element={<ChangePassword />} />
         <Route path="/ViewSales" element={<ViewSales />} />
-        <Route path="/ChatAppP" element={<ChatAppP />} />
-        <Route path="/ChatAppD" element={<ChatAppD />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
@@ -112,7 +107,6 @@ root.render(
         <Route path="/PaymentCanceled" element={<PaymentCanceled />} Component={PaymentCanceled} />
         <Route path="/PaymentCashSuccess" element={<PaymentCashSuccess />} />
         <Route path="/changePassword" element={<ChangePassword />} />
-        <Route path="/ChatApp" element={<ChatApp />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

@@ -85,7 +85,7 @@ export default function Patient() {
               </a>
               <p style={{ textAlign: "center", color: "gray" }}>Add a new delivery address</p>
             </div>
-            <div className="col-4 text-center d-flex flex-column align-items-center bg-sky-50">
+            {/* <div className="col-4 text-center d-flex flex-column align-items-center bg-sky-50">
               <FontAwesomeIcon
                 icon={faSyringe}
                 size="4x"
@@ -95,7 +95,7 @@ export default function Patient() {
                 <h3 style={{ fontSize: "30px", textAlign: "center", marginTop: "10px" }}>Pharmacy</h3>
               </a>
               <p style={{ textAlign: "center", color: "gray" }}>Chat with a pharmacist</p>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

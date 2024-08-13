@@ -82,7 +82,7 @@ export default function Pharm() {
             </a>
             <p style={{ textAlign: "center", color: "gray" }}>View sales based on a chosen month</p>
           </div>
-          <div className="col-4 text-center d-flex flex-column align-items-center bg-sky-50">
+          {/* <div className="col-4 text-center d-flex flex-column align-items-center bg-sky-50">
             <FontAwesomeIcon
               icon={faPrescriptionBottleMedical}
               size="4x"
@@ -107,7 +107,7 @@ export default function Pharm() {
               </h3>
             </a>
             <p style={{ textAlign: "center", color: "gray" }}>Chat with a patient</p>
-          </div>
+          </div> */}
         </div>
         <div className="text-center mt-10">
           <NotificationPopup notifications={notifications} />
