@@ -1,10 +1,9 @@
 import Login from "./Pages/Login/Login";
-import LoginAll from "./Pages/Login/LoginAll";
-import LoginPage from "./Pages/Login/LoginPage";
+import HomePage from "./MainPatient/HomePage";
 
 function App() {
   return (
-      <Login />
+      <HomePage />
   );
 }
 
