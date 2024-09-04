@@ -10861,6 +10861,195 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.slider {
+  position: relative;
+  opacity: 1;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.fade-in {
+  opacity: 1;
+}
+
+.fade-out {
+  opacity: 0;
+}
+
+.hidden {
+  display: none;
+}
+.slider-button {
+  width: 16px; /* Ensure the dots are circles */
+  height: 16px;
+  border-radius: 100%; /* Make the dots circular */
+  margin: 0 4px; /* Add some spacing between the dots */
+}
+
+
+// Variables for Colors
+$selected-dot-color: #0284C7;
+$unselected-dot-color:  rgb(59 130 246 / 0.5);
+$hover-bg-color: rgb(59 130 246 / 0.5);
+$hover-text-color: rgb(2 132 199);
+$button-bg-color: #0284C7;
+
+// Slider Container
+.slider {
+  position: relative;
+  opacity: 1;
+  transition: opacity 0.4s ease-in-out;
+
+  &.fade-in {
+    opacity: 1;
+  }
+
+  &.fade-out {
+    opacity: 0;
+  }
+
+  &.hidden {
+    display: none;
+  }
+}
+
+// Carousel Dots
+.slider-button {
+  width: 16px; // Ensure the dots are circles
+  height: 16px;
+  border-radius: 50%; // Make the dots circular
+  margin: 0 4px; // Add some spacing between the dots
+
+  &.selected {
+    background-color: $selected-dot-color; // Selected dot color
+  }
+
+  &.unselected {
+    background-color: $unselected-dot-color; // Unselected dot color
+  }
+}
+
+// General Styles
+.containerSlider {
+  max-width: 80%; // Ensure container is full-width
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.bg-cover {
+  background-size: cover;
+}
+
+.bg-center {
+  background-position: center;
+}
+
+.text-white {
+  color: #ffffff;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}
+
+.text-3xl {
+  font-size: 1.875rem;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+}
+
+.mb-10 {
+  margin-bottom: 2.5rem;
+}
+
+.leading-none {
+  line-height: 1;
+}
+
+.py-24 {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+.px-10 {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+
+.rounded {
+  border-radius: 0.375rem;
+}
+
+.rounded-full {
+  border-radius: 9999px;
+}
+
+.hover-bg {
+  background-color: $hover-bg-color;
+
+  &:hover {
+    background-color: $hover-bg-color;
+  }
+}
+
+.hover-text {
+  color: $hover-text-color;
+
+  &:hover {
+    color: $hover-text-color;
+  }
+}
+
+.bg-purple-800 {
+  background-color: $button-bg-color;
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.w-12 {
+  width: 3rem;
+}
+
+.pb-2 {
+  padding-bottom: 0.5rem;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+}
+
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.px-8 {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
 }
 
 /*# sourceMappingURL=bootstrap.css.map */
