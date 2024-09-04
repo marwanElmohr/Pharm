@@ -10861,6 +10861,7 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+
 .slider {
   position: relative;
   opacity: 1;
@@ -10878,13 +10879,6 @@ textarea.form-control-lg {
 .hidden {
   display: none;
 }
-.slider-button {
-  width: 16px; /* Ensure the dots are circles */
-  height: 16px;
-  border-radius: 100%; /* Make the dots circular */
-  margin: 0 4px; /* Add some spacing between the dots */
-}
-
 
 // Variables for Colors
 $selected-dot-color: #0284C7;
@@ -11015,39 +11009,12 @@ $button-bg-color: #0284C7;
   background-color: $button-bg-color;
 }
 
-.flex {
-  display: flex;
-}
-
 .justify-between {
   justify-content: space-between;
 }
 
-.mx-auto {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.w-12 {
-  width: 3rem;
-}
-
-.pb-2 {
-  padding-bottom: 0.5rem;
-}
-
 .text-xs {
   font-size: 0.75rem;
-}
-
-.py-4 {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-}
-
-.px-8 {
-  padding-left: 2rem;
-  padding-right: 2rem;
 }
 
 }
