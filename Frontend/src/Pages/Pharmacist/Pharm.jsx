@@ -6,15 +6,8 @@ import '../Bootstrap.scss'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from 'axios';
 import {
-  faBedPulse,
-  faUserDoctor,
-  faFileCirclePlus,
   faHandHoldingMedical,
-  faPrescriptionBottleMedical,
   faSyringe,
-  faUserInjured,
-  faShoppingCart,
-  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function Pharm() {
@@ -23,7 +16,7 @@ export default function Pharm() {
   useEffect(() => {
     getWalletValue();
     getOnePharmacist();
-  }, []); // The empty dependency array ensures the effect runs only once
+  }, []);
 
   const getWalletValue = async () => {
     try {

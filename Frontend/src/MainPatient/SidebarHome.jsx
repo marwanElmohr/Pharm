@@ -28,10 +28,12 @@ const Sidebar = () => {
   return (
     <div className="Bootstrap Patient">
       <div className="header">
-        <nav className="navbar navbar-expand-lg fixed-top navbar-scroll nav-color-bg">
-          <div className="container">
-            <a href="/Admin"><Logo height='4rem' className="mt-6 mb-0" /></a>
-            <button
+        <nav className="navbar navbar-expand-lg navbar-scroll nav-color-bg">
+          <div className="container flex flex-row">
+            <div className="w-1/2">
+              <a href="/Admin" className="flex justify-content-end w-full"><Logo height='4rem' className="mt-6 mb-0" /></a>
+              </div>
+            {/* <button
               className="navbar-toggler ps-0"
               type="button"
               data-mdb-toggle="collapse"
@@ -43,8 +45,9 @@ const Sidebar = () => {
               <span className="navbar-toggler-icon d-flex justify-content-start align-items-center">
                 <i className="fas fa-bars"></i>
               </span>
-            </button>
-            <div className="navbar-collapse" id="navbarExample01">
+            </button> */}
+            <div className="navbar-collapse w-1/2" id="navbarExample01">
+              <div style={{fontFamily: "Bebas Neue", fontWeight: 400, fontSize: "3vw"}}>Pharmacy</div>
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li className="nav-item dropdown group">
                   {userInfo.length !== 0 ? (

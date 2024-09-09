@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 const Slider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -8,14 +8,16 @@ const Slider = () => {
   const slides = [
     {
       id: 1,
-      imageUrl: 'https://th.bing.com/th/id/OIP.UeSwYIs0VZjDeZJH6hR0HAHaHa?rs=1&pid=ImgDetMain',
+      image1Url: 'https://static.thenounproject.com/png/5915269-200.png',
+      image2Url: 'https://static.thenounproject.com/png/5915269-200.png',
       title: 'Hello world',
       subtitle: 'Carousel with TailwindCSS and React'
     },
     {
       id: 2,
-      imageUrl: 'https://images.unsplash.com/photo-1544144433-d50aff500b91?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80',
-      title: 'Hello world',
+      image1Url: 'https://static.thenounproject.com/png/5915269-200.png',
+      image2Url: 'https://static.thenounproject.com/png/5915269-200.png',
+      title: 'Hello world 2',
       subtitle: 'Carousel with TailwindCSS and React'
     }
   ];
@@ -30,26 +32,30 @@ const Slider = () => {
 
   const handleSlideChange = (index) => {
     const totalSlides = slides.length;
-    const validIndex = Math.max(0, Math.min(index, totalSlides - 1));
-  
+    let validIndex = index;
+    if (index < 0) {
+      validIndex = totalSlides - 1;
+    } else if (index >= totalSlides) {
+      validIndex = 0;
+    }
+
     setIsFading(true);
     setTimeout(() => {
       setCurrentSlide(validIndex);
       setIsFading(false);
-    }, 400);
-  };  
+    }, 300);
+  };
 
   return (
-    <div className="relative sliderAx h-auto">
-
-      <div className="slider h-auto mx-auto">
+    <div className="relative sliderAx">
+      <div className="slider">
         {slides.map((slide, index) => (
           <div
             key={slide.id}
-            className={`container containerSlider mx-auto p-5 slider flex items-center ${index === currentSlide ? (isFading ? 'fade-out' : 'fade-in') : 'hidden'}`}
+            className={`p-10 slider flex items-center ${index === currentSlide ? (isFading ? 'fade-out' : 'fade-in') : 'hidden'}`}
             style={{ backgroundColor: '#f3f4f6' }}
           >
-            <div className="flex flex-col md:flex-row w-full">
+            <div className="flex flex-col w-full md:flex-row items-center justify-center">
               <div className="w-full md:w-1/2 p-4 md:p-0">
                 <p className="font-bold text-sm uppercase">Services</p>
                 <p className="text-3xl font-bold">{slide.title}</p>
@@ -60,10 +66,18 @@ const Slider = () => {
                 </a>
               </div>
               <div
-                className="bg-center bg-no-repeat h-full md:h-auto text-white py-24 px-10 w-full md:w-1/2 flex items-center justify-center"
+                className="bg-center bg-no-repeat h-full md:h-auto text-white py-48 px-10 w-full md:w-1/2 flex items-center justify-center"
                 style={{
-                  backgroundImage: `url(${slide.imageUrl})`,
-                  backgroundSize: 'contain'
+                  backgroundImage: `url(${slide.image1Url})`,
+                  backgroundSize: 'contain',
+                }}
+              >
+              </div>
+              <div
+                className="bg-center bg-no-repeat h-full md:h-auto text-white py-48 px-10 w-full md:w-1/2 flex items-center justify-center"
+                style={{
+                  backgroundImage: `url(${slide.image2Url})`,
+                  backgroundSize: 'contain',
                 }}
               >
               </div>
@@ -80,13 +94,6 @@ const Slider = () => {
             />
           ))}
         </div>
-      </div>
-
-      <div className="absolute left-16 top-1/2 transform -translate-y-1/2 p-2 rounded-full cursor-pointer fa-2x" onClick={() => handleSlideChange(currentSlide - 1)}>
-        <FontAwesomeIcon icon={faChevronLeft} className="text-white" />
-      </div>
-      <div className="absolute right-16 top-1/2 transform -translate-y-1/2 p-2 rounded-full cursor-pointer fa-2x" onClick={() => handleSlideChange(currentSlide + 1)}>
-        <FontAwesomeIcon icon={faChevronRight} className="text-white" />
       </div>
     </div>
   );
