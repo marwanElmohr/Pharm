@@ -13,6 +13,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Slider from "../Components/slider";
 import MedicineCarousel from "../Components/MedicineCarousel";
+import Footer from "../Components/Footer";
 
 export default function Patient() {
   return (
@@ -43,7 +44,7 @@ export default function Patient() {
 
           <div className="container">
             <div className="footer-in row">
-              <div className="col-4 text-center d-flex flex-column align-items-center bg-sky-50">
+              {/* <div className="col-4 text-center d-flex flex-column align-items-center bg-sky-50">
                 <FontAwesomeIcon
                   icon={faPrescription}
                   size="4x"
@@ -101,7 +102,7 @@ export default function Patient() {
                   <h3 style={{ fontSize: "30px", textAlign: "center", marginTop: "10px" }}>Delivery address</h3>
                 </a>
                 <p style={{ textAlign: "center", color: "gray" }}>Add a new delivery address</p>
-              </div>
+              </div> */}
               {/* <div className="col-4 text-center d-flex flex-column align-items-center bg-sky-50">
               <FontAwesomeIcon
                 icon={faSyringe}
@@ -116,6 +117,7 @@ export default function Patient() {
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     </div>
   );
