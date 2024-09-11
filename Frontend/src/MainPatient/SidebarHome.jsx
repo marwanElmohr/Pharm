@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import Logo from "../UI/Logo";
 import axios from 'axios';
+import Burger from "../Components/Burger";
 
 const Sidebar = () => {
   const [userInfo, setUserInfo] = useState([]);
@@ -29,10 +30,14 @@ const Sidebar = () => {
     <div className="Bootstrap Patient">
       <div className="header">
         <nav className="navbar navbar-expand-lg navbar-scroll nav-color-bg">
-          <div className="container flex flex-row">
+          <div className="container-fluid flex flex-row">
+            <div className="mx-2">
+              <Burger />
+            </div>
+            
             <div className="w-1/2">
               <a href="/Admin" className="flex justify-content-end w-full"><Logo height='4rem' className="mt-6 mb-0" /></a>
-              </div>
+            </div>
             {/* <button
               className="navbar-toggler ps-0"
               type="button"
