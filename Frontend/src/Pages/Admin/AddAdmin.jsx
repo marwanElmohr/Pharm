@@ -65,7 +65,7 @@ function AddAdmin(props) {
               <div className=" justify-center">
                 <div className="justify-center">
                   <h3 className="text-xl font-bold text-center text-black-600">
-                    Add a new Pharmacist
+                    Add a new Admin
                   </h3>
                   <p className="text-sm text-center text-gray-600 font-SourceSansPro -mt-8">
                     Please make sure to fill all the fields
