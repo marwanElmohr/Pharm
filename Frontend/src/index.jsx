@@ -50,6 +50,7 @@ root.render(
         <Route path="/AddPharmacist" element={<AddPharmacist />} />
         <Route path="/AddPatient" element={<AddPatient />} />
         <Route path="/ResetPass" element={<ResetPass />} />
+        <Route path="/AddAdmin" element={<AddAdmin />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
@@ -61,7 +62,6 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/Admin" element={<Admin />} />
-        <Route path="/AddAdmin" element={<AddAdmin />} />
         <Route path="/AddEmail" element={<AddEmail />} />
         <Route path="/ViewAdminInfoAdmin" element={<ViewAdminInfoAdmin />} />
         <Route path="/ViewPharmInfoAdmin" element={<ViewPharmInfoAdmin />} />
