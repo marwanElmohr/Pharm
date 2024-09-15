@@ -55,11 +55,11 @@ function AddAdmin(props) {
   return (
     <div>
       <Sidebar pageWrapId={'page-wrap'} outerContainerId={'outer-container'} />
-      <div className="flex flex-row h-screen">
-        <div className="w-1/2 flex items-center justify-center">
-          <img src={require('../../Assets/3657978.jpg')} className="w-9/12 h-auto -mt-32"></img>
+      <div className="flex flex-row">
+        <div className="hidden md:flex w-1/2 items-center justify-center">
+          <img src={require('../../Assets/3657978.jpg')} className="w-9/12 h-auto mt-8"></img>
         </div>
-        <div className="w-1/2">
+        <div className="w-full md:w-1/2">
           <div className="Bootstrap Patient">
             <div className="relative px-5 mt-16">
               <div className=" justify-center">

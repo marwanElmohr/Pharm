@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes} from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import Admin from './Pages/Admin/Admin'
@@ -34,81 +34,85 @@ import ViewSales from './Pages/Pharmacist/ViewSales';
 import ViewSalesAdmin from './Pages/Admin/ViewSalesAdmin';
 import ViewMedPrescription from './Pages/Patient/ViewMedPrescription';
 import Alternatives from './Pages/Patient/Alternatives';
+import MedicineCategory from './MainPatient/MedicineCategory';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 // user hasn't logged in yet or is a pending pharmacist so won't access anything except login, reset password, and register pages.
-if(sessionStorage.getItem("type") === null || sessionStorage.getItem("type") === "PendingPharmacist") {
-root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/LoginAll" element={<LoginAll />} />
-        <Route path="/Login" element={<Login />} />
-        <Route path="/LoginPage" element={<LoginPage />} />
-        <Route path="/AddPharmacist" element={<AddPharmacist />} />
-        <Route path="/AddPatient" element={<AddPatient />} />
-        <Route path="/ResetPass" element={<ResetPass />} />
-        <Route path="/AddAdmin" element={<AddAdmin />} />
-      </Routes>
-    </BrowserRouter>
-  </React.StrictMode>
-);
-// if he is an admin a set of routes is only available for him meaning he can't access pharmacists' or patients' routes even if he know the url
-} else if(sessionStorage.getItem("type") === "Admin") {
-root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/Admin" element={<Admin />} />
-        <Route path="/AddEmail" element={<AddEmail />} />
-        <Route path="/ViewAdminInfoAdmin" element={<ViewAdminInfoAdmin />} />
-        <Route path="/ViewPharmInfoAdmin" element={<ViewPharmInfoAdmin />} />
-        <Route path="/ViewPatientInfoAdmin" element={<ViewPatientInfoAdmin />} />
-        <Route path="/ViewRequestsAdmin" element={<ViewRequestsAdmin />} />
-        <Route path="/ViewMedAdmin" element={<ViewMedAdmin />} />
-        <Route path="/changePassword" element={<ChangePassword />} />
-        <Route path="/ViewSalesAdmin" element={<ViewSalesAdmin />} />
-      </Routes>
-    </BrowserRouter>
-  </React.StrictMode>
-);
-// if he is a pharmacist a set of routes is only available for him meaning he can't access patients' or admins' routes even if he know the url
-} else if(sessionStorage.getItem("type") === "Pharmacist") {
-root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/Pharm" element={<Pharm />} />
-        <Route path="/AddMedicine" element={<AddMedicine />} />
-        <Route path="/EditMedicine" element={<EditMedicine />} />
-        <Route path="/ViewMedPharm" element={<ViewMedPharmCopy />} />
-        <Route path="/changePassword" element={<ChangePassword />} />
-        <Route path="/ViewSales" element={<ViewSales />} />
-      </Routes>
-    </BrowserRouter>
-  </React.StrictMode>
-);
-// if he is a patient a set of routes is only available for him meaning he can't access pharmacists' or admins' routes even if he know the url
-} if(sessionStorage.getItem("type") === "Patient") {
-root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/Patient" element={<Patient />} />
-        <Route path="/ViewMedPatient" element={<ViewMedPatient />} />
-        <Route path="/ViewMedPrescriptions" element={<ViewMedPrescription />} />
-        <Route path="/Alternatives" element={<Alternatives />} />
-        <Route path="/Cart" element={<Cart />} />
-        <Route path="/ViewOrders" element={<ViewOrders />} />
-        <Route path="/Address" element={<AddDeliveryAddress />} />
-        <Route path="/PaymentSuccess" element={<PaymentSuccess />} />
-        <Route path="/PaymentCanceled" element={<PaymentCanceled />} Component={PaymentCanceled} />
-        <Route path="/PaymentCashSuccess" element={<PaymentCashSuccess />} />
-        <Route path="/changePassword" element={<ChangePassword />} />
-      </Routes>
-    </BrowserRouter>
-  </React.StrictMode>
-);
+if (sessionStorage.getItem("type") === null || sessionStorage.getItem("type") === "PendingPharmacist") {
+  root.render(
+    <React.StrictMode>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/MedicineCategory" element={<MedicineCategory />} />
+          <Route path="/LoginAll" element={<LoginAll />} />
+          <Route path="/Login" element={<Login />} />
+          <Route path="/LoginPage" element={<LoginPage />} />
+          <Route path="/AddPharmacist" element={<AddPharmacist />} />
+          <Route path="/AddPatient" element={<AddPatient />} />
+          <Route path="/ResetPass" element={<ResetPass />} />
+        </Routes>
+      </BrowserRouter>
+    </React.StrictMode>
+  );
+  // if he is an admin a set of routes is only available for him meaning he can't access pharmacists' or patients' routes even if he know the url
+} else if (sessionStorage.getItem("type") === "Admin") {
+  root.render(
+    <React.StrictMode>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/Admin" element={<Admin />} />
+          <Route path="/AddAdmin" element={<AddAdmin />} />
+          <Route path="/AddEmail" element={<AddEmail />} />
+          <Route path="/ViewAdminInfoAdmin" element={<ViewAdminInfoAdmin />} />
+          <Route path="/ViewPharmInfoAdmin" element={<ViewPharmInfoAdmin />} />
+          <Route path="/ViewPatientInfoAdmin" element={<ViewPatientInfoAdmin />} />
+          <Route path="/ViewRequestsAdmin" element={<ViewRequestsAdmin />} />
+          <Route path="/ViewMedAdmin" element={<ViewMedAdmin />} />
+          <Route path="/changePassword" element={<ChangePassword />} />
+          <Route path="/ViewSalesAdmin" element={<ViewSalesAdmin />} />
+        </Routes>
+      </BrowserRouter>
+    </React.StrictMode>
+  );
+  // if he is a pharmacist a set of routes is only available for him meaning he can't access patients' or admins' routes even if he know the url
+} else if (sessionStorage.getItem("type") === "Pharmacist") {
+  root.render(
+    <React.StrictMode>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/Pharm" element={<Pharm />} />
+          <Route path="/AddAdmin" element={<AddAdmin />} />
+          <Route path="/AddMedicine" element={<AddMedicine />} />
+          <Route path="/EditMedicine" element={<EditMedicine />} />
+          <Route path="/ViewMedPharm" element={<ViewMedPharmCopy />} />
+          <Route path="/changePassword" element={<ChangePassword />} />
+          <Route path="/ViewSales" element={<ViewSales />} />
+        </Routes>
+      </BrowserRouter>
+    </React.StrictMode>
+  );
+  // if he is a patient a set of routes is only available for him meaning he can't access pharmacists' or admins' routes even if he know the url
+} if (sessionStorage.getItem("type") === "Patient") {
+  root.render(
+    <React.StrictMode>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/Patient" element={<App />} />
+          <Route path="/MedicineCategory" element={<MedicineCategory />} />
+          <Route path="/ViewMedPatient" element={<ViewMedPatient />} />
+          <Route path="/ViewMedPrescriptions" element={<ViewMedPrescription />} />
+          <Route path="/Alternatives" element={<Alternatives />} />
+          <Route path="/Cart" element={<Cart />} />
+          <Route path="/ViewOrders" element={<ViewOrders />} />
+          <Route path="/Address" element={<AddDeliveryAddress />} />
+          <Route path="/PaymentSuccess" element={<PaymentSuccess />} />
+          <Route path="/PaymentCanceled" element={<PaymentCanceled />} Component={PaymentCanceled} />
+          <Route path="/PaymentCashSuccess" element={<PaymentCashSuccess />} />
+          <Route path="/changePassword" element={<ChangePassword />} />
+        </Routes>
+      </BrowserRouter>
+    </React.StrictMode>
+  );
 }

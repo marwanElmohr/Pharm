@@ -5,12 +5,20 @@ import Slider from "react-slick";
 import { MDBIcon } from "mdb-react-ui-kit";
 import '../Pages/Bootstrap.scss'
 
+const PrevArrow = ({ className, style, onClick }) => (
+    <button className={className} style={{ ...style }} onClick={onClick} />
+);
+
+const NextArrow = ({ className, style, onClick }) => (
+    <button className={className} style={{ ...style }} onClick={onClick} />
+);
+
 const settings = {
     infinite: false,
     slidesToShow: 4,
     slidesToScroll: 1,
-    prevArrow: <button className="slick-prev" />,
-    nextArrow: <button className="slick-next" />,
+    prevArrow: <PrevArrow />,
+    nextArrow: <NextArrow />,
     responsive: [
         {
             breakpoint: 1024,
@@ -122,8 +130,8 @@ export default function App() {
             <div className="p-3 mx-auto">
                 <Slider {...settings} className="custom-carousel">
                     {testimonials.map((testimonial) => (
-                        <div>
-                            <div key={testimonial.id} className="bg-white shadow-sm rounded-xl duration-500 hover:scale-105 hover:shadow-xl m-3 h-[400px]">
+                        <div key={testimonial.id}>
+                            <div className="bg-white shadow-sm rounded-xl duration-500 hover:scale-105 hover:shadow-xl m-3 h-[400px]">
                                 <a href="#">
                                     <img
                                         src={testimonial.image}

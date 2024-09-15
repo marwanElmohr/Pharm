@@ -1,5 +1,5 @@
 import OrderDetails from "../../Components/OrderDetails";
-import SidebarPatient from "../../Components/SidebarPatient";
+import SidebarPatient from "../../MainPatient/SidebarHome";
 import React from "react";
 
 function ViewOrders() {
@@ -7,7 +7,7 @@ function ViewOrders() {
   return (
     <div>
       <SidebarPatient pageWrapId={'page-wrap'} outerContainerId={'outer-container'} />
-      <div className="mt-28">
+      <div>
         <OrderDetails />
       </div>
     </div>

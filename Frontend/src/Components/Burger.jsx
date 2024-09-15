@@ -50,26 +50,26 @@ const Burger = () => {
 
             {/* Menu */}
             {open && (
-                <div className="absolute top-18 left-0 bg-[#FFFFFF]  w-60 h-auto shadow-lg z-40">
+                <div className="absolute top-18 left-0 bg-[#FFFFFF]  w-60 h-auto shadow-lg z-40 rounded-lg">
                     <ul>
                         <li className="py-2">
-                            <a className="text-black-500" href="#">
-                                Home
+                            <a className="text-black-500" href="/MedicineCategory">
+                                Category 1
                             </a>
                         </li>
                         <li className="py-2">
-                            <a className="text-black-500" href="#">
-                                About
+                            <a className="text-black-500" href="/MedicineCategory">
+                                Category 2
                             </a>
                         </li>
                         <li className="py-2">
-                            <a className="text-black-500" href="#">
-                                Services
+                            <a className="text-black-500" href="/MedicineCategory">
+                                Category 3
                             </a>
                         </li>
                         <li className="py-2">
-                            <a className="text-black-500" href="#">
-                                Contact
+                            <a className="text-black-500" href="/MedicineCategory">
+                                Category 4
                             </a>
                         </li>
                     </ul>

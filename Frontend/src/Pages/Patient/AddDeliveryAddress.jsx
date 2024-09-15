@@ -1,6 +1,6 @@
 import Card from "../../UI/Card";
 import Logo from "../../UI/Logo";
-import Sidebar from "../../Components/SidebarPatient";
+import Sidebar from "../../MainPatient/SidebarHome";
 import axios from "axios";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";

@@ -1,6 +1,6 @@
 import Logo from "../../UI/Logo";
 import React, { useState, useEffect } from 'react';
-import SidebarPatient from "../../Components/SidebarPatient";
+import SidebarPatient from "../../MainPatient/SidebarHome";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import './Patient.scss'
 import '../Bootstrap.scss'
@@ -236,7 +236,7 @@ function Cart() {
     return (
       <div>
         <SidebarPatient pageWrapId={'page-wrap'} outerContainerId={'outer-container'} />
-        <div className="flex mb-14 mt-32">
+        <div className="flex mb-14 mt-5">
           <div className="ml-10">
             {CartData.map((p, index) => (
               <div key={index} className="mt-6 w-[60rem] h-[14.25rem] rounded-md shadow-md  bg-gray-100 justify-center space-y-4">

@@ -1,5 +1,5 @@
 import MedTableAllCopy from "../../Components/MedTableAll copy";
-import Sidebar from "../../Components/SidebarPatient";
+import Sidebar from "../../MainPatient/SidebarHome";
 
 function ViewMedPatient() {
   return (
