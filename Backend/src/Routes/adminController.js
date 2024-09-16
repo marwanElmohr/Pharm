@@ -24,7 +24,6 @@ const createAdmin = async (req, res) => {
       await Admin.create({
         Username: req.body.Username,
         Password: await hashPassword(req.body.Password),
-        Role: "Admin",
         Email: req.body.Email,
       });
       res.status(200).send("Created successfully");
@@ -66,7 +65,6 @@ const updateAdmin = async (req, res) => {
 };
 
 const deleteAdmin = async (req, res) => {
-  //delete a Doctor from the database
   try {
     if ((await Admin.find({ Username: req.body.Username }).length) == 0) {
       res.status(300).send("User Not Found");

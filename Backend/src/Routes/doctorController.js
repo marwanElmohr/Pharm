@@ -8,8 +8,6 @@ const hashPassword = async (password) => {
 };
 
 const createDoctor = async (req, res) => {
-  //add a new Doctor to the database with
-  //Name, Email and Age
   try {
     let doctorUsername = await Patient.findOne({ Username: req.body.Username });
     const doctorMail = await Patient.findOne({ Email: req.body.Email });
@@ -22,15 +20,9 @@ const createDoctor = async (req, res) => {
       await Doctor.create({
         Username: req.body.Username,
         Password: await hashPassword(req.body.Password),
-        DOB: req.body.DOB,
         Name: req.body.Name,
         Email: req.body.Email,
-        Hourlyrate: req.body.Hourlyrate,
-        Affiliation: req.body.Affiliation,
-        Education: req.body.Education,
         Speciality: req.body.Speciality,
-        Wallet: 0,
-        Status: "Pending",
       });
       res.status(200).send("Created successfully");
     } else {
@@ -43,70 +35,6 @@ const createDoctor = async (req, res) => {
   } catch (e) {
     res.status(400).send("Failed to Create Doctor");
   }
-};
-const updateStatus = async (req, res) => {
-  let user = await Doctor.updateOne(
-    { Username: req.body.Username },
-    { $set: { Status: req.body.Status } },
-  );
-  res.status(200).send("Updateed Status");
-};
-const viewFilesDoctor = async (req, res) => {
-  try {
-    const filename = req.params.filename;
-    // Read the contents of the uploadDirectory
-    res.status(200).download("./uploadDoctor/" + filename);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
-const doctorUploadFile = async (req, res) => {
-  const filename = req.body.Username + "-" + ".pdf";
-  console.log(req.body);
-  console.log(req.files);
-  const file = req.files.file;
-  var filePath = "./uploadDoctor/" + filename;
-  file.mv(filePath);
-  let doctorUsername = await Patient.findOne({ Username: req.body.Username });
-  const doctorMail = await Patient.findOne({ Email: req.body.Email });
-  const adminMail = await Admin.findOne({ Email: req.body.Email });
-  if (!doctorUsername) {
-    doctorUsername = await Admin.findOne({ Username: req.body.Username });
-  }
-  console.log("I am in create");
-  if (!doctorUsername && !doctorMail && !adminMail) {
-    //console.log(await hashPassword(req.body.Password));
-    console.log("I am in create");
-    await Doctor.create({
-      Username: req.body.Username,
-      Password: await hashPassword(req.body.Password),
-      DOB: req.body.DOB,
-      Name: req.body.Name,
-      Email: req.body.Email,
-      Hourlyrate: req.body.Hourlyrate,
-      Affiliation: req.body.Affiliation,
-      Education: req.body.Education,
-      Speciality: req.body.Speciality,
-      Wallet: 0,
-      Status: "Pending",
-      FileNames: [filename],
-    });
-    res.status(200).send("Created successfully");
-  } else {
-    if (doctorMail || adminMail) {
-      res.status(401).send("e-mail already exists");
-    } else {
-      res.status(401).send("username already exists");
-    }
-  }
-  // res.status(400).send("Failed to Create Doctor");
-  // const username = req.body.Username;
-  // console.log(username);
-  // const filter = {};
-  // filter.Username = username;
-  // const doctor = await Doctor.findOne({Username: username});
-  // console.log(doctor);
 };
 
 const getPatientNames = async (req, res) => {
@@ -124,12 +52,6 @@ const getPatientNames = async (req, res) => {
   } catch (e) {
     res.status(400).send("Could not get patients");
   }
-};
-
-const GetWalletD = async (req, res) => {
-  const user = await Doctor.findOne({ Username: req.params.username });
-  const wallet = user.Wallet;
-  res.status(200).json(wallet);
 };
 
 const getDoctors = async (req, res) => {
@@ -152,31 +74,7 @@ const getDoctors = async (req, res) => {
   }
 };
 
-
-// const getPrescriptions = async (req, res) => {
-//   try {
-//     const { Date, Doctor, Status } = req.query;
-//     const filter = {};
-//     filter.username = req.body.username;
-//     if (Date) {
-//       console.log("hi");
-//       filter.Date = Date + "T22:00:00.000Z";
-//     }
-//     if (Doctor) {
-//       filter.Doctor = Doctor;
-//     }
-//     if (Status) {
-//       filter.Status = Status;
-//     }
-//     const Prescription = await prescriptions.find(filter);
-//     res.status(200).send(Prescription);
-//   } catch (e) {
-//     res.status(400).send("Error could not get Patients !!");
-//   }
-// };
-
 const updateDoctor = async (req, res) => {
-  //update a Doctor in the database
   const user = req.body.Username;
   console.log(req.body.Username);
   if (req.body.Email) {
@@ -209,21 +107,17 @@ const updateDoctor = async (req, res) => {
   }
   res.status(200).send("Done");
 };
+
 const findDoctor = async (req, res) => {
   console.log(req.query.Username);
   const doc = await Doctor.findOne({ Username: req.query.Username });
   res.status(200).send(doc);
 };
 
-
 module.exports = {
   createDoctor,
   getDoctors,
   updateDoctor,
   findDoctor,
-  doctorUploadFile,
   getPatientNames,
-  updateStatus,
-  GetWalletD,
-  viewFilesDoctor,
 };

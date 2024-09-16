@@ -81,19 +81,6 @@ const updatePharmacist = async (req, res) => {
   }
 };
 
-const findPharmacist = async (req, res) => {
-  if (
-    (await Pharmacist.findOne({ Username: req.body.Username }).length) === 0
-  ) {
-    res.status(300).send("User Not Found");
-  } else {
-    const Pharmacist = await Pharmacist.findOne({
-      Username: req.body.Username,
-    });
-    res.status(200).send({ data: Pharmacist });
-  }
-};
-
 const deletePharmacist = async (req, res) => {
   //delete a Doctor from the database
   try {
@@ -139,7 +126,6 @@ module.exports = {
   getPharmacists,
   updatePharmacist,
   deletePharmacist,
-  findPharmacist,
   getOnePharmacist,
   notifyOutOfStock,
 };

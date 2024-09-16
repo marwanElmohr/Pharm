@@ -14,11 +14,6 @@ const doctorSchema = new Schema(
       required: true,
     },
 
-    DOB: {
-      type: Date,
-      required: true,
-    },
-
     Name: {
       type: String,
       required: true,
@@ -30,44 +25,15 @@ const doctorSchema = new Schema(
       unique: true,
     },
 
-    Hourlyrate: {
-      type: Number,
-      required: true,
-    },
-
-    Affiliation: {
-      type: String,
-      required: true,
-    },
-
-    Education: {
-      type: String,
-      required: true,
-    },
-
     Patients: {
       type: Array,
       required: false,
     },
+
     Speciality: {
       type: String, 
       required: true
     },
-
-    Status: {
-      type: String,
-      enum: ["Pending", "Accepted", "Waiting"],
-      required: true,
-    },
-    
-    FileNames:{
-      type: Array,
-      required: false,
-    },
-    Wallet: {
-      type: Number,
-      required: false,
-    }
   },
   { timestamps: true },
 );

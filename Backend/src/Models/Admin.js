@@ -12,9 +12,6 @@ const adminSchemaP = new Schema(
       type: String,
       required: true,
     },
-    Role: {
-      type: String,
-    },
     Email: {
       type: String,
       unique: true,

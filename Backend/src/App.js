@@ -10,37 +10,44 @@ require("dotenv").config();
 const stripe = require('stripe')('sk_test_51OAYarCTaVksTfn04m2fjCWyIUscrRLMD57NmZ58DTz0O2ljqL8P42WLklVXPUZGPvmUD4hlxEkbit9nfpSPCWEB00UWnsTWUw');
 
 const {
+  createDoctor,
   getDoctors,
+  updateDoctor,
+  findDoctor,
+  getPatientNames,
 } = require("./Routes/doctorController");
 
 const {
-  getPrescriptions
+  getPrescriptions,
+  getPrescriptionsDoctor,
+  addPrescriptions,
 } = require("./Routes/prescriptionsController.js");
 
 const {
   createPatient,
   getPatients,
   updatePatient,
+  getCart,
   incrementQuantity,
   decrementQuantity,
   removeFromCart,
   updateAddress,
   getAddress,
   deletePatient,
-  ResetPass,
-  getCart,
   getOrder,
   addOrder,
   cancelOrder,
+  popOrder,
   getWallet,
   getSales,
-  popOrder,
+  ResetPass,
   getOnePatient,
 } = require("./Routes/patientController");
 
 const {
   createMedicine,
   getMedicines,
+  getMedicinesPharm,
   getMedicinalUse,
   updateMedicine,
   archiveMedicine,
@@ -52,7 +59,6 @@ const {
   setMedicinalUse,
   setActiveIngredient,
   getOneMedicine,
-  getMedicinesPharm,
   showAlternatives,
   getAllMedicines,
 } = require("./Routes/medicineController");
@@ -70,9 +76,6 @@ const {
   getPharmacists,
   updatePharmacist,
   deletePharmacist,
-  uploadDocument,
-  viewFiles,
-  uploadFile,
   getOnePharmacist,
   notifyOutOfStock,
 } = require("./Routes/pharmacistController");
@@ -163,7 +166,15 @@ app.get("/getSales", getSales);
 app.put("/popOrder", popOrder);
 app.get("/getOnePatient", getOnePatient);
 
+app.get("/getAllDoctors", getDoctors);
+app.post("/addDoctor", createDoctor);
+app.put("/updateDoctor", updateDoctor);
+
 app.get("/getPrescriptions", getPrescriptions);
+app.get("/getPrescriptionsDoctor", getPrescriptionsDoctor);
+app.post("/addPrescriptions", addPrescriptions);
+app.get("/getOneDoctor", findDoctor);
+app.get("/getPatientNames", getPatientNames);
 
 app.post("/addPharmacist", createPharmacist);
 app.get("/getPharmacist", getPharmacists);
@@ -186,7 +197,7 @@ app.put("/archiveMedicine", archiveMedicine);
 app.put("/unarchiveMedicine", unarchiveMedicine);
 app.put("/updateQuantity", updateQuantity);
 app.put("/reverseQuantity", reverseQuantity);
-app.get("/getAllMedicines",getAllMedicines);
+app.get("/getAllMedicines", getAllMedicines);
 
 app.post("/addAdmin", createAdmin);
 app.get("/getAdmin", getAdmins);
