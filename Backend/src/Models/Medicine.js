@@ -27,6 +27,14 @@ const medicineSchema = new Schema(
       type: Number,
       required: true,
     },
+    Category: {
+      type: String,
+      required: true,
+    },
+    Subcategory: {
+      type: String,
+      required: true,
+    },
     Sales: {
       type: Number,
     },
@@ -36,14 +44,6 @@ const medicineSchema = new Schema(
     },
     ActiveIngredient: {
       type: String,
-      required: false,
-    },
-    ArrayMedicineUse: {
-      type: Array,
-      required: false,
-    },
-    ArrayActiveIngredient: {
-      type: Array,
       required: false,
     },
     OverTheCounter: {

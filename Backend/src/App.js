@@ -64,6 +64,15 @@ const {
 } = require("./Routes/medicineController");
 
 const {
+  addCategory,
+  addSubcategory,
+  addMedicinalUse,
+  addActiveIngredient,
+  getType,
+  getName,
+} = require("./Routes/allmedicineController");
+
+const {
   createAdmin,
   getAdmins,
   updateAdmin,
@@ -198,6 +207,13 @@ app.put("/unarchiveMedicine", unarchiveMedicine);
 app.put("/updateQuantity", updateQuantity);
 app.put("/reverseQuantity", reverseQuantity);
 app.get("/getAllMedicines", getAllMedicines);
+
+app.get("/getName", getName);
+app.get("/getType", getType);
+app.post("/addCategory", addCategory);
+app.post("/addSubcategory", addSubcategory);
+app.post("/addMedicinalUse", addMedicinalUse);
+app.post("/addActiveIngredient", addActiveIngredient);
 
 app.post("/addAdmin", createAdmin);
 app.get("/getAdmin", getAdmins);
