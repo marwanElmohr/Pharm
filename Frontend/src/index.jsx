@@ -3,8 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import Admin from './Pages/Admin/Admin'
-import AddAdmin from './Pages/Admin/AddAdmin';
-import AddPharmacist from './Pages/Pharmacist/AddPharmacist';
+import AddPharmacist from './Pages/Admin/AddPharmacist';
 import AddPatient from './Pages/Patient/AddPatient';
 import ViewAdminInfoAdmin from './Pages/Admin/ViewAdminInfoAdmin';
 import ViewPharmInfoAdmin from './Pages/Admin/ViewPharmInfoAdmin';
@@ -49,9 +48,9 @@ if (sessionStorage.getItem("type") === null || sessionStorage.getItem("type") ==
           <Route path="/LoginAll" element={<LoginAll />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/LoginPage" element={<LoginPage />} />
-          <Route path="/AddPharmacist" element={<AddPharmacist />} />
           <Route path="/AddPatient" element={<AddPatient />} />
           <Route path="/ResetPass" element={<ResetPass />} />
+          <Route path="/AddPharmacist" element={<AddPharmacist />} />
         </Routes>
       </BrowserRouter>
     </React.StrictMode>
@@ -63,7 +62,7 @@ if (sessionStorage.getItem("type") === null || sessionStorage.getItem("type") ==
       <BrowserRouter>
         <Routes>
           <Route path="/Admin" element={<Admin />} />
-          <Route path="/AddAdmin" element={<AddAdmin />} />
+          {/*<Route path="/AddAdmin" element={<AddAdmin />} />*/}
           <Route path="/AddEmail" element={<AddEmail />} />
           <Route path="/ViewAdminInfoAdmin" element={<ViewAdminInfoAdmin />} />
           <Route path="/ViewPharmInfoAdmin" element={<ViewPharmInfoAdmin />} />
@@ -83,7 +82,6 @@ if (sessionStorage.getItem("type") === null || sessionStorage.getItem("type") ==
       <BrowserRouter>
         <Routes>
           <Route path="/Pharm" element={<Pharm />} />
-          <Route path="/AddAdmin" element={<AddAdmin />} />
           <Route path="/AddMedicine" element={<AddMedicine />} />
           <Route path="/EditMedicine" element={<EditMedicine />} />
           <Route path="/ViewMedPharm" element={<ViewMedPharmCopy />} />

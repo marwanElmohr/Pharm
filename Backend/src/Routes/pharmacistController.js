@@ -17,7 +17,6 @@ const createPharmacist = async (req, res) => {
     let adminEmail = await Admin.findOne({ Email: req.body.Email });
     let patientEmail = await Patient.findOne({ Email: req.body.Email });
 
-    const wallet = 1000;
     if (adminUsername || patientUsername) {
       res.status(401).send("Username already exists");
     } else if (adminEmail || patientEmail) {
@@ -26,81 +25,13 @@ const createPharmacist = async (req, res) => {
       await Pharmacist.create({
         Username: req.body.Username,
         Password: await hashPassword(req.body.Password),
-        DOB: req.body.DOB,
         Name: req.body.Name,
-        Email: req.body.Email,
-        Hourlyrate: req.body.Hourlyrate,
-        Affiliation: req.body.Affiliation,
-        Education: req.body.Education,
-        ReqStatus: "Pending",
-        WalletValue: wallet,
+        Email: req.body.Email
       });
       res.status(200).send("Created successfully");
     }
   } catch (e) {
     res.status(400).send("Failed to Create Pharmacist");
-  }
-};
-
-const uploadFile = async (req, res) => {
-  try {
-    const username = req.body.Username;
-    let adminUsername = await Admin.findOne({ Username: req.body.Username });
-    let patientUsername = await Patient.findOne({ Username: req.body.Username });
-    let adminEmail = await Admin.findOne({ Email: req.body.Email });
-    let patientEmail = await Patient.findOne({ Email: req.body.Email });
-    let files = []
-    const wallet = 1000;
-    if (req.files) {
-      if (req.files.idFile) {
-        const idFile = req.files.idFile;
-        const idFilename = `${username}-ID.pdf`;
-        const idFilePath = `./uploadPharmacist/${idFilename}`;
-        idFile.mv(idFilePath);
-        files.push(idFilename);
-      }
-      if (req.files.degreeFile) {
-        const degreeFile = req.files.degreeFile;
-        const degreeFilename = `${username}-Degree.pdf`;
-        const degreeFilePath = `./uploadPharmacist/${degreeFilename}`;
-        degreeFile.mv(degreeFilePath);
-        files.push(degreeFilename);
-      }
-      if (req.files.licenseFile) {
-        const licenseFile = req.files.licenseFile;
-        const licenseFilename = `${username}-License.pdf`;
-        const licenseFilePath = `./uploadPharmacist/${licenseFilename}`;
-        licenseFile.mv(licenseFilePath);
-        files.push(licenseFilename);
-      }
-    }
-
-    if (adminUsername || patientUsername) {
-      res.status(401).send("Username already exists");
-    } else if (adminEmail || patientEmail) {
-      res.status(401).send("Email already exists");
-    } else {
-      await Pharmacist.create({
-        Username: username,
-        Password: await hashPassword(req.body.Password),
-        DOB: req.body.DOB,
-        Name: req.body.Name,
-        Email: req.body.Email,
-        Hourlyrate: req.body.Hourlyrate,
-        Affiliation: req.body.Affiliation,
-        Education: req.body.Education,
-        ReqStatus: "Pending",
-        FileNames: [files],
-        WalletValue: wallet,
-        // FileNames: [idFilename, degreeFilename, licenseFilename],
-      });
-
-      res.status(200).send("Created successfully");
-    }
-
-  } catch (error) {
-    console.error("Error:", error.message);
-    res.status(500).send("Internal Server Error");
   }
 };
 
@@ -177,35 +108,6 @@ const deletePharmacist = async (req, res) => {
   }
 };
 
-const uploadDocument = async (req, res) => {
-  const username = req.body.Username;
-  console.log(username);
-  const filter = {};
-  filter.Username = username;
-  const pharm = await Pharmacist.findOne({ Username: username });
-  console.log(pharm);
-  const size = pharm.FileNames.length + 1;
-  const filename = username + "-" + size + ".pdf";
-  const file = req.files.file;
-  var filePath = "./uploadPharmacist/" + filename;
-  file.mv(filePath);
-  await Pharmacist.updateOne(
-    { Username: username },
-    { $push: { FileNames: filename } },
-  );
-  res.status(200);
-};
-
-const viewFiles = async (req, res) => {
-  try {
-    const filename = req.params.filename;
-    res.status(200).download("./uploadPharmacist/" + filename);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
-
 const getOnePharmacist = async (req, res) => {
   const username = req.query.username;
   const user = await Pharmacist.findOne({ Username: username });
@@ -238,9 +140,6 @@ module.exports = {
   updatePharmacist,
   deletePharmacist,
   findPharmacist,
-  uploadDocument,
-  viewFiles,
-  uploadFile,
   getOnePharmacist,
   notifyOutOfStock,
 };

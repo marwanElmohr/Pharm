@@ -8,7 +8,7 @@ import { Input, Typography } from "@material-tailwind/react";
 //import {faCheck,faTimes,faInfoCircle} from "@fortawesome/fontawesome-svg-core";
 //import {fontAwesomeIcon} from "@fortawesome/fontawesome-svg-core";
 
-function AddAdmin(props) {
+function AddPharmacist(props) {
   const usernameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -27,26 +27,26 @@ function AddAdmin(props) {
     const emailValue = emailRef.current.value;
     const passwordValue = passwordRef.current.value;
     const passwordConValue = passwordConRef.current.value;
-    const newAdmin = {
+    const newPharmacist = {
       Username: usernameValue,
       Email: emailValue,
       Password: passwordValue,
     };
-    console.log(newAdmin);
+    console.log(newPharmacist);
     const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{3,}$/;
     if (passwordRegex.test(passwordValue) && passwordConValue == passwordValue) {
       setFailed(false);
       axios
-        .post("http://localhost:3001/addAdmin", newAdmin, {})
+        .post("http://localhost:3001/addPharmacist", newPharmacist, {})
         .then((res) => {
-          console.log("Admin added");
+          console.log("Pharmacist added");
           usernameRef.current.value = "";
           emailRef.current.value = "";
           passwordRef.current.value = "";
           passwordConRef.current.value = "";
         })
         .catch((error) => {
-          console.log("Unable to add admin");
+          console.log("Unable to add Pharmacist");
         });
     } else {
       setFailed(true);
@@ -65,7 +65,7 @@ function AddAdmin(props) {
               <div className=" justify-center">
                 <div className="justify-center">
                   <h3 className="text-xl font-bold text-center text-black-600">
-                    Add a new Admin
+                    Add a new Pharmacist
                   </h3>
                   <p className="text-sm text-center text-gray-600 font-SourceSansPro -mt-8">
                     Please make sure to fill all the fields
@@ -157,4 +157,4 @@ function AddAdmin(props) {
   );
 }
 
-export default AddAdmin;
+export default AddPharmacist;

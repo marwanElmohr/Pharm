@@ -166,12 +166,9 @@ app.get("/getOnePatient", getOnePatient);
 app.get("/getPrescriptions", getPrescriptions);
 
 app.post("/addPharmacist", createPharmacist);
-app.post("/uploadFile", uploadFile);
 app.get("/getPharmacist", getPharmacists);
 app.put("/updatePharmacist", updatePharmacist);
 app.delete("/deletePharmacist", deletePharmacist);
-app.post("/uploadDocument", uploadDocument);
-app.get("/viewFiles/:filename", viewFiles);
 app.get("/getOnePharmacist", getOnePharmacist);
 app.put("/notifyOutOfStock", notifyOutOfStock);
 app.get("/getBoolean", getOneMedicine);
