@@ -4338,10 +4338,6 @@
     color: var(--bs-navbar-active-color);
   }
 
-  .navbar-nav .dropdown-menu {
-    position: static;
-  }
-
   .navbar-text {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
@@ -12815,6 +12811,17 @@
     left: 0;
     right: 0;
     bottom: -20px;
+  }
+
+  .home,
+  .services,
+  .reports,
+  .contact,
+  .events,
+  .support {
+    display: flex;
+    margin-left: 260px;
+    font-size: 2rem;
   }
 
 }

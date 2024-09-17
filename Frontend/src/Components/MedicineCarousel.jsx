@@ -25,8 +25,6 @@ const settings = {
             settings: {
                 slidesToShow: 2,
                 slidesToScroll: 1,
-                infinite: true,
-                dots: true,
             },
         },
         {

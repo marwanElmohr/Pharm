@@ -1,81 +1,80 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+import * as FaIcons from "react-icons/fa";
+import * as AiIcons from "react-icons/ai";
+import { getSidebarData } from "../MainPatient/SidebarData"; // Import your function
+import SubMenu from "../MainPatient/Submenu";
+import { IconContext } from "react-icons/lib";
+
+const Nav = styled.div`
+    height: 80px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+`;
+
+const NavIcon = styled(Link)`
+    margin-left: 2rem;
+    font-size: 2rem;
+    height: 80px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+`;
+
+const SidebarNav = styled.nav`
+    background: #f3f4f6;
+    width: 250px;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: ${({ sidebar }) => (sidebar ? "0" : "-100%")};
+    transition: 350ms;
+    z-index: 30;
+`;
+
+const SidebarWrap = styled.div`
+    width: 100%;
+`;
 
 const Burger = () => {
-    const [open, setOpen] = useState(false);
+    const [sidebar, setSidebar] = useState(false);
+    const [sidebarData, setSidebarData] = useState([]);
+
+    useEffect(() => {
+        const fetchSidebarData = async () => {
+            const data = await getSidebarData();
+            setSidebarData(data);
+        };
+
+        fetchSidebarData();
+    }, []);
+
+    const showSidebar = () => setSidebar(!sidebar);
 
     return (
-        <div className="relative bg-white">
-            <div className="container flex justify-between items-center p-4">
-                {/* Burger Button */}
-                <button
-                    onClick={() => setOpen(!open)}
-                    className="text-blue-500 z-50 relative"
-                >
-                    <div className="w-6 h-6 relative">
-                        {!open ? (
-                            // Burger Icon
-                            <svg
-                                className="w-6 h-6"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M4 6h16M4 12h16M4 18h16"
-                                />
-                            </svg>
-                        ) : (
-                            // X Icon when menu is open
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="1.5"
-                                stroke="currentColor"
-                                className="w-6 h-6"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M6 18L18 6M6 6l12 12"
-                                />
-                            </svg>
-                        )}
-                    </div>
-                </button>
-            </div>
-
-            {/* Menu */}
-            {open && (
-                <div className="absolute top-18 left-0 bg-[#FFFFFF]  w-60 h-auto shadow-lg z-40 rounded-lg">
-                    <ul>
-                        <li className="py-2">
-                            <a className="text-black-500" href="/MedicineCategory">
-                                Category 1
-                            </a>
-                        </li>
-                        <li className="py-2">
-                            <a className="text-black-500" href="/MedicineCategory">
-                                Category 2
-                            </a>
-                        </li>
-                        <li className="py-2">
-                            <a className="text-black-500" href="/MedicineCategory">
-                                Category 3
-                            </a>
-                        </li>
-                        <li className="py-2">
-                            <a className="text-black-500" href="/MedicineCategory">
-                                Category 4
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            )}
-        </div>
+        <>
+            <IconContext.Provider value={{ color: "#0284C7" }}>
+                <Nav>
+                    <NavIcon to="#">
+                        <FaIcons.FaBars onClick={showSidebar} />
+                    </NavIcon>
+                </Nav>
+                <SidebarNav sidebar={sidebar ? 1 : 0} className="shadow-lg">
+                    <SidebarWrap>
+                        <NavIcon to="#">
+                            <AiIcons.AiOutlineClose onClick={showSidebar} />
+                        </NavIcon>
+                        {sidebarData.map((item, index) => (
+                            <SubMenu item={item} key={index} />
+                        ))}
+                    </SidebarWrap>
+                </SidebarNav>
+            </IconContext.Provider>
+        </>
     );
 };
 

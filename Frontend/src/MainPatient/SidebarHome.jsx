@@ -59,11 +59,11 @@ const Sidebar = () => {
             </div>
 
             <div className="w-1/2">
-              <a href="/Admin" className="flex justify-content-end w-full"><Logo height='4rem' className="mt-6 mb-0" /></a>
+              <a href="/" className="flex justify-content-end w-full"><Logo height='4rem' className="mt-6 mb-0" /></a>
             </div>
             <div className="navbar-collapse w-1/2 flex justify-content-end pe-3" id="navbarExample01">
               <ul className="navbar-nav mb-2 mb-lg-0">
-                <li className="nav-item px-3 relative group">
+                <li className="nav-item px-3 relative group cursor-pointer">
                   <a className="nav-link" aria-current="page" onClick={handleCart}>
                     <FontAwesomeIcon icon={faCartShopping} />
                   </a>
@@ -71,7 +71,7 @@ const Sidebar = () => {
                     Cart
                   </div>
                 </li>
-                <li className="nav-item px-3 relative group">
+                <li className="nav-item px-3 relative group cursor-pointer">
                   <a className="nav-link" aria-current="page" onClick={handleOrders}>
                     <FontAwesomeIcon icon={faNotesMedical} />
                   </a>
@@ -79,7 +79,7 @@ const Sidebar = () => {
                     Orders
                   </div>
                 </li>
-                <li className="nav-item px-3 relative group">
+                <li className="nav-item px-3 relative group cursor-pointer">
                   <a className="nav-link" aria-current="page" onClick={handlePrescriptions}>
                     <FontAwesomeIcon icon={faPrescriptionBottle} />
                   </a>

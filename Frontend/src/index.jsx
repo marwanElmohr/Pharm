@@ -15,7 +15,6 @@ import App from './App';
 import AddMedicine from './Pages/Pharmacist/AddMedicine';
 import EditMedicine from './Pages/Pharmacist/EditMedicine';
 import ViewMedPharmCopy from './Pages/Pharmacist/ViewMedPharm copy';
-import Patient from './Pages/Patient/Patient';
 import Pharm from './Pages/Pharmacist/Pharm';
 import LoginAll from './Pages/Login/LoginAll';
 import Cart from './Pages/Patient/Cart';
