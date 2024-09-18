@@ -33,6 +33,7 @@ import ViewSalesAdmin from './Pages/Admin/ViewSalesAdmin';
 import ViewMedPrescription from './Pages/Patient/ViewMedPrescription';
 import Alternatives from './Pages/Patient/Alternatives';
 import MedicineCategory from './MainPatient/MedicineCategory';
+import DoctorDashboard from './MainDoctor/DoctorDashboard';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -50,6 +51,7 @@ if (sessionStorage.getItem("type") === null || sessionStorage.getItem("type") ==
           <Route path="/AddPatient" element={<AddPatient />} />
           <Route path="/ResetPass" element={<ResetPass />} />
           <Route path="/AddPharmacist" element={<AddPharmacist />} />
+          <Route path="/DoctorDashboard" element={<DoctorDashboard />} />
         </Routes>
       </BrowserRouter>
     </React.StrictMode>
