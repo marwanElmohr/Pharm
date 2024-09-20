@@ -81,9 +81,7 @@ export default function MedTablePrescriptions() {
       getMed();
       async function getMed() {
         const res = await axios.get("http://localhost:3001/getPrescriptions", {
-          params: {
-            Patient: sessionStorage.getItem("Username"),
-          },
+          headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` },
         });
         setMed(res.data);
       }
@@ -160,8 +158,7 @@ export default function MedTablePrescriptions() {
             medicinename: name,
             quantity: 1,
             price: price,
-            username: sessionStorage.getItem("Username"),
-          });
+          }, { headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` }, });
           console.log("Update request sent successfully");
 
           // Wait for 2 seconds

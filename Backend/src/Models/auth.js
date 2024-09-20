@@ -17,20 +17,6 @@ const comparePassword = async (password, hash) => {
     }
 };
 
-const createJWTP = (username) => {
-    const token = jwt.sign(username, process.env.JWT_SECRETP);
-    return token;
-};
-const createJWTPH = (username) => {
-    const token = jwt.sign(username, process.env.JWT_SECRETPH);
-    return token;
-};
-
-const createJWTA = (username) => {
-    const token = jwt.sign(username, process.env.JWT_SECRETA);
-    return token;
-};
-
 const protectP = (req, res, next) => {
     const bearer = req.headers.authorization;
     if (!bearer) {
@@ -124,18 +110,19 @@ const protectA = (req, res, next) => {
 const signin = async (req, res) => {
     const username = req.body.Username;
     const password = req.body.Password;
-    let user = await Patient.findOne({ Username: username });
+
+    const user = await Patient.findOne({ Username: username });
+
     let isValid;
     if (user) {
         isValid = await comparePassword(password, user.Password);
         if (isValid) {
-            res.status(200).send({
-                token: createJWTP(username),
+            return res.status(200).send({
                 type: "Patient",
-                Username: username,
+                token: jwt.sign({ userId: user._id }, process.env.JWT_SECRETP, { expiresIn: '2h' }),
             });
         } else {
-            res.status(401).send("Invalid password");
+            return res.status(401).send("Invalid password");
         }
     } else {
         user = await Pharmacist.findOne({ Username: username });
@@ -144,14 +131,12 @@ const signin = async (req, res) => {
             if (isValid) {
                 if (user.ReqStatus == "Accepted") {
                     res.status(200).send({
-                        token: createJWTPH(username),
                         type: "Pharmacist",
-                        Username: username,
+                        token: jwt.sign({ userId: user._id }, process.env.JWT_SECRETPH, { expiresIn: '2h' }),
                     });
                 } else {
                     res.status(200).send({
                         type: "PendingPharmacist",
-                        Username: username,
                     });
                 }
             } else {
@@ -163,9 +148,8 @@ const signin = async (req, res) => {
                 isValid = await comparePassword(password, user.Password);
                 if (isValid) {
                     res.status(200).send({
-                        token: createJWTA(username),
                         type: "Admin",
-                        Username: username,
+                        token: jwt.sign({ userId: user._id }, process.env.JWT_SECRETA, { expiresIn: '2h' }),
                     });
                 } else {
                     res.status(401).send("Invalid password");
@@ -221,9 +205,6 @@ const changePassword = async (req, res) => {
 module.exports = {
     signin,
     comparePassword,
-    createJWTA,
-    createJWTPH,
-    createJWTP,
     protectA,
     protectPH,
     protectP,

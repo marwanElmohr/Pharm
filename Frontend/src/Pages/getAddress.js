@@ -7,9 +7,8 @@ function GetAddress({ state, city, street, apartment }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        let username = sessionStorage.getItem("Username");
         const res = await axios.get("http://localhost:3001/getAddress", {
-          params: { username },
+          headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` },
         });
         if (Array.isArray(res.data)) {
           // Assuming res.data is an array of objects with keys {state, city, street, apartment}

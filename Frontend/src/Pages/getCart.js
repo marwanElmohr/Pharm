@@ -7,10 +7,9 @@ function GetCart({ medicineName, count, price }) {
     useEffect(() => {
         async function fetchData() {
             try {
-                let username = sessionStorage.getItem("Username");
 
                 const res = await axios.get("http://localhost:3001/getcart", {
-                    params: { username }
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` },
                 }).then(res => {
                     console.log(res);
                     if (Array.isArray(res.data.cart)) {

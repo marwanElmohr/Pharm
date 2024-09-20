@@ -69,9 +69,8 @@ function Cart() {
 
   const getWalletValue = async () => {
     try {
-      let username = sessionStorage.getItem("Username");
       const res = await axios.get("http://localhost:3001/getWallet", {
-        params: { username }
+        headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` }
       });
       console.log("Wallet data from the server:", res.data);
       setRandomPointsInWallet(res.data);
@@ -87,8 +86,7 @@ function Cart() {
       await axios.put("http://localhost:3001/incrementQuantity", {
         medicinename: name,
         price: price,
-        username: sessionStorage.getItem("Username"),
-      });
+      }, { headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` }, });
       console.log("Update request sent successfully");
       setCount(count + 1);
       setTotalPrice(totalprice + price);
@@ -102,8 +100,7 @@ function Cart() {
       await axios.put("http://localhost:3001/decrementQuantity", {
         medicinename: name,
         price: price,
-        username: sessionStorage.getItem("Username"),
-      });
+      }, { headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` }, });
       console.log("Update request sent successfully");
       setCount(count - 1);
       setTotalPrice(totalprice - price);
@@ -116,8 +113,7 @@ function Cart() {
     try {
       await axios.put("http://localhost:3001/removeFromCart", {
         medicinename: name,
-        username: sessionStorage.getItem("Username"),
-      });
+      }, { headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` }, });
       console.log("Item removed successfully");
       setCount(count - count);
     } catch (error) {
@@ -138,15 +134,16 @@ function Cart() {
         if (response.data === "Quantity is now zero") {
           await Promise.all(pharmacistData.data.map(async (pharmacist) => {
             const { Name, Email, ReqStatus } = pharmacist;
-            if(ReqStatus === "Accepted")
+            if (ReqStatus === "Accepted")
               await notification(medicineName, Name, Email);
           }));
         }
       }));
 
       if (paymentMethod === "payWithVisa") {
-        let user = sessionStorage.getItem("Username")
-        await axios.post("http://localhost:3001/create-checkout-session", { Username: user }).then((res) => {
+        await axios.post("http://localhost:3001/create-checkout-session",
+          { headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` } }
+        ).then((res) => {
           window.location = res.data.url
           handleOrder();
         }).catch((err) => console.log(err.message));
@@ -160,7 +157,6 @@ function Cart() {
     } catch (error) {
       console.error("Error updating data:", error);
 
-      // Redirect to another page if status is 400 with the message "Not enough to remove"
       if (error.response && error.response.status === 400 && error.response.data === "Not enough to remove") {
         window.location = "/ViewMedPatient";
       }
@@ -185,10 +181,9 @@ function Cart() {
       await axios.put("http://localhost:3001/addOrder", {
         orderaddress: selectedOption,
         paymentmethod: pay,
-        username: sessionStorage.getItem("Username"),
         date: newFullDate,
         month: newMonth,
-      });
+      }, { headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` }, });
 
       console.log("Order request sent successfully");
     } catch (error) {
@@ -206,7 +201,6 @@ function Cart() {
 
       if (!notificationData.receiver) {
         console.error("Recipient email address is empty");
-        // Handle the error or notify the user about the issue
         return;
       }
 
@@ -224,11 +218,10 @@ function Cart() {
       await axios.put("http://localhost:3001/notifyOutOfStock", {
         notifications: notificationData
       });
-      
+
       console.log(`Notification sent: ${medicineName}`);
     } catch (error) {
       console.error(`Error in notification: ${error.message}`);
-      // Handle other errors as needed...
     }
   };
 

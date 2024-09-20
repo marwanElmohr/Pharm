@@ -57,8 +57,7 @@ export default function MedTableAllCopy() {
             medicinename: name,
             quantity: 1,
             price: price,
-            username: sessionStorage.getItem("Username"),
-          });
+          }, { headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` }, });
           console.log("Update request sent successfully");
 
           // Wait for 2 seconds

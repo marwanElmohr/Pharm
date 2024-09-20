@@ -4,29 +4,28 @@ export const makeOrderDetails = async () => {
   const data = [];
   let Order = null;
   try {
-    let username = sessionStorage.getItem("Username");
     const response = await axios.get("http://localhost:3001/getOrder", {
-        params: { username },
+      headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` },
     });
     Order = response.data;
 
-    for (let i = 0 ; i < Order.length ; i++) {
-        let o = Order[i];
-        const id = o.orderid;
-        const address =  o.orderAddress;
-        const payment = o.paymentMethod;
-        const status =  o.orderStatus;
-        const cartItems = o.cartItems;
-      
-        data.push({
-          id,
-          address,
-          payment,
-          status,
-          cartItems,
-        });
-      }
-      return data;
+    for (let i = 0; i < Order.length; i++) {
+      let o = Order[i];
+      const id = o.orderid;
+      const address = o.orderAddress;
+      const payment = o.paymentMethod;
+      const status = o.orderStatus;
+      const cartItems = o.cartItems;
+
+      data.push({
+        id,
+        address,
+        payment,
+        status,
+        cartItems,
+      });
+    }
+    return data;
   } catch (error) {
     console.error("Error fetching Orders:", error);
   }

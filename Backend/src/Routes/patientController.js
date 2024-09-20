@@ -54,8 +54,12 @@ const createPatient = async (req, res) => {
 };
 
 const getCart = async (req, res) => {
-  const user = await Patient.findOne({ Username: req.query.username });
-
+  const token = req.headers.authorization?.split(' ')[1];
+  const decoded = jwt.verify(token, process.env.JWT_SECRETP);
+  const user = await Patient.findById(decoded.userId);
+  if (!user) {
+    return res.status(404).send("User not found");
+  }
   let cart = [];
   if (user.Cart) {
     cart = user.Cart;
@@ -64,7 +68,7 @@ const getCart = async (req, res) => {
       total += cart[i].price;
     }
   }
-  // console.log(user.Cart);
+
   res.status(200).send({ cart });
 };
 
@@ -82,8 +86,9 @@ const updatePatient = async (req, res) => {
     const orderName = req.body.medicinename;
     const orderQuantity = req.body.quantity;
     const orderPrice = req.body.price;
-    const username = req.body.username;
-    const user = await Patient.findOne({ Username: username });
+    const token = req.headers.authorization?.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRETP);
+    const user = await Patient.findById(decoded.userId);
     if (!user) {
       return res.status(404).send("User not found");
     }
@@ -92,13 +97,11 @@ const updatePatient = async (req, res) => {
       (item) => item.medicineName === orderName
     );
     if (existingCartItemIndex !== -1) {
-      // If the medicine is already in the cart, update the quantity and price
       cart[existingCartItemIndex].count += orderQuantity;
       cart[existingCartItemIndex].price = orderPrice;
       cart[existingCartItemIndex].totalprice =
         orderPrice * cart[existingCartItemIndex].count;
     } else {
-      // If the medicine is not in the cart, add a new entry
       cart.push({
         medicineName: orderName,
         count: orderQuantity,
@@ -106,7 +109,7 @@ const updatePatient = async (req, res) => {
         totalprice: orderPrice,
       });
     }
-    await Patient.updateOne({ Username: username }, { $set: { Cart: cart } });
+    await Patient.updateOne({ Username: user.Username }, { $set: { Cart: cart } });
     res.status(200).send("Updated cart successfully!");
   } catch (e) {
     console.log(e);
@@ -118,8 +121,9 @@ const incrementQuantity = async (req, res) => {
   try {
     const orderName = req.body.medicinename;
     const orderPrice = req.body.price;
-    const username = req.body.username;
-    const user = await Patient.findOne({ Username: username });
+    const token = req.headers.authorization?.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRETP);
+    const user = await Patient.findById(decoded.userId);
     if (!user) {
       return res.status(404).send("User not found");
     }
@@ -135,7 +139,7 @@ const incrementQuantity = async (req, res) => {
       return res.status(404).send("Medicine not found in the cart");
     }
 
-    await Patient.updateOne({ Username: username }, { $set: { Cart: cart } });
+    await Patient.updateOne({ Username: user.Username }, { $set: { Cart: cart } });
     res.status(200).send("Incremented quantity successfully!");
   } catch (e) {
     console.log(e);
@@ -147,9 +151,9 @@ const decrementQuantity = async (req, res) => {
   try {
     const orderName = req.body.medicinename;
     const orderPrice = req.body.price;
-    const username = req.body.username; // Assuming you pass the username in the request
-    const user = await Patient.findOne({ Username: username });
-
+    const token = req.headers.authorization?.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRETP);
+    const user = await Patient.findById(decoded.userId);
     if (!user) {
       return res.status(404).send("User not found");
     }
@@ -160,21 +164,17 @@ const decrementQuantity = async (req, res) => {
     );
 
     if (existingMedicineIndex !== -1) {
-      // If the medicine is found in the cart
       if (cart[existingMedicineIndex].count > 1) {
-        // If the count is greater than 1, decrement the quantity
         cart[existingMedicineIndex].count -= 1;
         cart[existingMedicineIndex].totalprice -= orderPrice;
       } else {
-        // If the count is 1, remove the medicine from the cart
         cart.splice(existingMedicineIndex, 1);
       }
     } else {
-      // If the medicine is not in the cart, you may want to handle this case
       return res.status(404).send("Medicine not found in the cart");
     }
 
-    await Patient.updateOne({ Username: username }, { $set: { Cart: cart } });
+    await Patient.updateOne({ Username: user.Username }, { $set: { Cart: cart } });
     res.status(200).send("Decremented quantity successfully!");
   } catch (e) {
     console.log(e);
@@ -185,8 +185,9 @@ const decrementQuantity = async (req, res) => {
 const removeFromCart = async (req, res) => {
   try {
     const orderName = req.body.medicinename;
-    const username = req.body.username; // Assuming you pass the username in the request
-    const user = await Patient.findOne({ Username: username });
+    const token = req.headers.authorization?.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRETP);
+    const user = await Patient.findById(decoded.userId);
 
     if (!user) {
       return res.status(404).send("User not found");
@@ -199,10 +200,9 @@ const removeFromCart = async (req, res) => {
     if (existingMedicineIndex !== -1) {
       cart.splice(existingMedicineIndex, 1);
     } else {
-      // If the medicine is not in the cart
       return res.status(404).send("Medicine not found in the cart");
     }
-    await Patient.updateOne({ Username: username }, { $set: { Cart: cart } });
+    await Patient.updateOne({ Username: user.Username }, { $set: { Cart: cart } });
     res.status(200).send("Decremented quantity successfully!");
   } catch (e) {
     console.log(e);
@@ -212,12 +212,13 @@ const removeFromCart = async (req, res) => {
 
 const updateAddress = async (req, res) => {
   try {
-    const username = req.body.username; // Assuming you pass the username in the request
     const state = req.body.state;
     const city = req.body.city;
     const street = req.body.street;
     const apartment = req.body.apartment;
-    const user = await Patient.findOne({ Username: username });
+    const token = req.headers.authorization?.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRETP);
+    const user = await Patient.findById(decoded.userId);
     if (!user) {
       return res.status(404).send("User not found");
     }
@@ -229,7 +230,7 @@ const updateAddress = async (req, res) => {
       apartment: apartment,
     });
     await Patient.updateOne(
-      { Username: username },
+      { Username: user.Username },
       { $set: { Address: address } }
     );
     res.status(200).send("Updated address successfully!");
@@ -240,10 +241,12 @@ const updateAddress = async (req, res) => {
 };
 
 const getAddress = async (req, res) => {
-  const username = req.query.username;
-  const user = await Patient.findOne({ Username: username });
-  //const address = user.Address;
-  // console.log(user);
+  const token = req.headers.authorization?.split(' ')[1];
+  const decoded = jwt.verify(token, process.env.JWT_SECRETP);
+  const user = await Patient.findById(decoded.userId);
+  if (!user) {
+    return res.status(404).send("User not found");
+  }
   let address = [];
   if (user.Address) {
     address = user.Address;
@@ -252,28 +255,28 @@ const getAddress = async (req, res) => {
 };
 
 const deletePatient = async (req, res) => {
-  //delete a Patient from the database
   try {
-    if ((await Patient.find({ Username: req.body.Username }).length) == 0) {
-      res.status(300).send("User Not Found");
-    } else {
-      await Patient.deleteOne({ Username: req.body.Username });
-      res.status(200).send("Deleted successfully");
+    const token = req.headers.authorization?.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRETP);
+    const user = await Patient.findById(decoded.userId);
+    if (!user) {
+      return res.status(404).send("User not found");
     }
+    await Patient.deleteOne({ Username: user.Username });
+    res.status(200).send("Deleted successfully");
   } catch (e) {
     res.status(400).send("Error could not delete patient !!");
   }
 };
 
 const getOrder = async (req, res) => {
-  const username = req.query.username;
-  const user = await Patient.findOne({ Username: username });
-  // console.log(user);
+  const token = req.headers.authorization?.split(' ')[1];
+  const decoded = jwt.verify(token, process.env.JWT_SECRETP);
+  const user = await Patient.findById(decoded.userId);
   let orders = [];
   if (user.Orders) {
     orders = user.Orders;
   }
-  // console.log(orders);
   res.status(200).send(orders);
 };
 
@@ -282,12 +285,14 @@ const addOrder = async (req, res) => {
     const orderAddress = req.body.orderaddress;
     const paymentMethod = req.body.paymentmethod;
     const orderStatus = "Accepted";
-    const username = req.body.username; // Replace with the actual username
-    const user = await Patient.findOne({ Username: username });
-    let wallet = user.Wallet;
+    const token = req.headers.authorization?.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRETP);
+    const user = await Patient.findById(decoded.userId);
     if (!user) {
       return res.status(404).send("User not found");
     }
+
+    let wallet = user.Wallet;
     let order = user.Orders || [];
     let orderid = order.length;
     order.push({
@@ -320,7 +325,7 @@ const addOrder = async (req, res) => {
     }
     user.Cart = [];
     await Patient.updateOne(
-      { Username: username },
+      { Username: user.Username },
       { $set: { Orders: order, Sales: sales, Cart: [], Wallet: wallet } }
     );
     res.status(200).send("Added order successfully!");
@@ -328,17 +333,19 @@ const addOrder = async (req, res) => {
     res.status(400).send("Error could not add order !!");
   }
 };
+
 const cancelOrder = async (req, res) => {
   try {
-    const username = req.body.username;
     const orderid = req.body.orderid;
     const totalprice = req.body.totalprice;
-
-    const user = await Patient.findOne({ Username: username });
-    const wallet = user.Wallet;
+    const token = req.headers.authorization?.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRETP);
+    const user = await Patient.findById(decoded.userId);
     if (!user) {
       return res.status(404).send("User not found");
     }
+
+    const wallet = user.Wallet;
     let sales = user.Sales || [];
     let order = user.Orders || [];
     const existingOrderIndex = order.findIndex(
@@ -348,7 +355,7 @@ const cancelOrder = async (req, res) => {
       sales = sales.filter(item => item.orderid !== orderid);
       order[existingOrderIndex].orderStatus = "Cancelled";
       await Patient.updateOne(
-        { Username: username },
+        { Username: user.Username },
         { $set: { Orders: order, Sales: sales, Wallet: (wallet + totalprice) } }
       );
     } else {
@@ -362,12 +369,13 @@ const cancelOrder = async (req, res) => {
 
 const popOrder = async (req, res) => {
   try {
-    const username = req.body.username;
-    const user = await Patient.findOne({ Username: username });
-
+    const token = req.headers.authorization?.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRETP);
+    const user = await Patient.findById(decoded.userId);
     if (!user) {
       return res.status(404).send("User not found");
     }
+
     let sales = user.Sales || [];
     let order = user.Orders || [];
     const existingOrderIndex = order.length - 1;
@@ -377,27 +385,23 @@ const popOrder = async (req, res) => {
       sales = sales.filter(item => item.orderid !== canceledOrder);
       const cart = user.Cart || [];
 
-      // Merge items from canceled order back into the cart
       canceledOrder.cartItems.forEach((item) => {
         const existingCartItemIndex = cart.findIndex(
           (cartItem) => cartItem.medicineName === item.medicineName
         );
 
         if (existingCartItemIndex !== -1) {
-          // If the medicine is already in the cart, update the quantity
           cart[existingCartItemIndex].count += item.count;
           cart[existingCartItemIndex].totalprice += item.totalprice;
         } else {
-          // If the medicine is not in the cart, add a new entry
           cart.push({ ...item });
         }
       });
 
-      // Remove the canceled order from the order history
       order.pop();
 
       await Patient.updateOne(
-        { Username: username },
+        { Username: user.Username },
         { $set: { Orders: order, Sales: sales, Cart: cart } }
       );
       res.status(200).send("Order status changed successfully!");
@@ -410,9 +414,13 @@ const popOrder = async (req, res) => {
 };
 
 const getWallet = async (req, res) => {
-  const username = req.query.username;
-  const user = await Patient.findOne({ Username: username });
-  // console.log(user);
+  const token = req.headers.authorization?.split(' ')[1];
+  const decoded = jwt.verify(token, process.env.JWT_SECRETP);
+  const user = await Patient.findById(decoded.userId);
+  if (!user) {
+    return res.status(404).send("User not found");
+  }
+  
   wallet = user.Wallet;
   res.status(200).json(wallet);
 };
@@ -450,14 +458,14 @@ const ResetPass = async (req, res) => {
   const newPassword = req.body.Password;
   const email = req.body.Email;
   console.log(email);
-  let user = await Pharmacist.findOne({ Email:email});
+  let user = await Pharmacist.findOne({ Email: email });
   if (user) {
     await Pharmacist.updateOne(
       { Email: email, ReqStatus: "Accepted" },
       { $set: { Password: await hashPassword(newPassword) } }
     ).catch("An error happened");
     res.status(200).send("all good");
-        return;
+    return;
   } else {
     user = await Patient.findOne({ Email: email });
     if (user) {
@@ -466,7 +474,7 @@ const ResetPass = async (req, res) => {
         { $set: { Password: await hashPassword(newPassword) } }
       ).catch("An error happened");
       res.status(200).send("all good");
-        return;
+      return;
     } else {
       user = await Admin.findOne({ Email: email });
       if (user) {
@@ -486,9 +494,24 @@ const ResetPass = async (req, res) => {
 };
 
 const getOnePatient = async (req, res) => {
-  const username = req.query.username;
-  const user = await Patient.findOne({ Username: username });
-  res.status(200).json(user);
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRETP);
+
+    const user = await Patient.findById(decoded.userId).select('Username Email phoneNumber');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ username: user.Username, email: user.Email, phoneNumber: user.phoneNumber });
+  } catch (error) {
+    console.error('Error processing user name:', error);
+    res.status(500).json({ message: 'jwt expired' });
+  }
 };
 
 module.exports = {

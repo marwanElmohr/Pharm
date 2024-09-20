@@ -6,43 +6,53 @@ import axios from 'axios';
 import Burger from "../Components/Burger";
 
 const Sidebar = () => {
-  const [userInfo, setUserInfo] = useState([]);
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+
   useEffect(() => {
     getUserInfo();
   }, []);
 
   const getUserInfo = async () => {
-    try {
-      if (!sessionStorage.getItem("Username")) {
-        setUserInfo([]);
-      } else {
-        let username = sessionStorage.getItem("Username");
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setUsername('');
+      setEmail('');
+      setPhoneNumber('');
+    }
+    else {
+      try {
         const res = await axios.get("http://localhost:3001/getOnePatient", {
-          params: { username }
+          headers: { 'Authorization': `Bearer ${token}` }
         });
-        setUserInfo(res.data);
+        const { username, email, phoneNumber } = res.data;
+        setUsername(username);
+        setEmail(email);
+        setPhoneNumber(phoneNumber);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        localStorage.clear();
       }
-    } catch (error) {
-      console.error("Error updating data:", error);
     }
   };
 
   const handleCart = () => {
-    if (sessionStorage.getItem("Username")) {
+    if (localStorage.getItem("token")) {
       window.location.href = "/Cart";
     } else {
       window.location.href = "/Login";
     }
   };
   const handleOrders = () => {
-    if (sessionStorage.getItem("Username")) {
+    if (localStorage.getItem("token")) {
       window.location.href = "/ViewOrders";
     } else {
       window.location.href = "/Login";
     }
   };
   const handlePrescriptions = () => {
-    if (sessionStorage.getItem("Username")) {
+    if (localStorage.getItem("token")) {
       window.location.href = "/Prescriptions";
     } else {
       window.location.href = "/Login";
@@ -88,7 +98,7 @@ const Sidebar = () => {
                   </div>
                 </li>
                 <li className="nav-item dropdown group relative ps-3">
-                  {userInfo.length !== 0 ? (
+                  {username !== '' ? (
                     <>
                       <a
                         className="nav-link dropdown-toggle flex items-center"
@@ -101,19 +111,17 @@ const Sidebar = () => {
                       >
                         <FontAwesomeIcon icon={faUser} className="mr-2" />
                         <span>
-                          {sessionStorage.getItem("Username")}
+                          {username}
                         </span>
                       </a>
                       <div className="dropdown-menu absolute hidden group-hover:block right-0 p-3 shadow-lg" aria-labelledby="navbarDropdown">
-                        <span className="nav-link" aria-current="page">Email: {userInfo.Email}</span>
-                        <span className="nav-link" aria-current="page">Phone number: {userInfo.phoneNumber}</span>
+                        <span className="nav-link" aria-current="page">Email: {email}</span>
+                        <span className="nav-link" aria-current="page">Phone number: {phoneNumber}</span>
                         <a className="nav-link" aria-current="page" href="/Address">Add delivery address</a>
                         <a className="nav-link" aria-current="page" href="/changePassword">Change password</a>
                         <a className="nav-link" aria-current="page" href='/'
                           onClick={() => {
-                            sessionStorage.removeItem("Username");
-                            sessionStorage.removeItem("type");
-                            sessionStorage.removeItem("token");
+                            localStorage.clear();
                           }}>Log Out</a>
                       </div>
                     </>

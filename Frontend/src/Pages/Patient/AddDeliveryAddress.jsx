@@ -29,8 +29,7 @@ function AddDeliveryAddress() {
                 city: cityValue,
                 street: streetValue,
                 apartment: apartmentValue,
-                username: sessionStorage.getItem("Username"),
-            });
+            }, { headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` }, });
             console.log("Update request sent successfully");
         } catch (error) {
             console.error("Error updating data:", error);

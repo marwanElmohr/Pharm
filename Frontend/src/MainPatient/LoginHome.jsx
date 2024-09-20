@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import '../Pages/Login/PatientReg.scss'
+import SelectRelation from "../UI/SelectRelation";
 
 class Login extends Component {
     state = {
@@ -40,7 +41,6 @@ class Login extends Component {
             formData.append("Affiliation", this.state.signUp_affiliation);
             formData.append("Education", this.state.signUp_education);
             formData.append("file", this.state.file);
-            console.log(sessionStorage.getItem("Username"));
             try {
                 const result = await fetch("http://localhost:3001/uploadFile", {
                     method: "POST",
@@ -143,17 +143,16 @@ class Login extends Component {
             .then((res) => {
                 this.setState({ success: true });
                 this.setState({ error: false });
-                sessionStorage.setItem("Username", res.data.Username);
-                sessionStorage.setItem("token", res.data.token);
-                sessionStorage.setItem("type", res.data.type);
+                localStorage.setItem("token", res.data.token);
+                localStorage.setItem("type", res.data.type);
 
                 console.log(res);
-                if (res.statusText == "OK") {
-                    if (sessionStorage.getItem("type") == "Patient") {
+                if (res.data) {
+                    if (res.data.type == "Patient") {
                         window.location.replace("/Patient");
-                    } else if (sessionStorage.getItem("type") == "Pharmacist") {
+                    } else if (res.data.type == "Pharmacist") {
                         window.location.replace("/Pharm");
-                    } else if (sessionStorage.getItem("type") == "Admin") {
+                    } else if (res.data.type == "Admin") {
                         window.location.replace("/Admin");
                     } else {
                         this.setState({ error: true });

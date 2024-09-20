@@ -71,10 +71,9 @@ const OrderDetails = () => {
                     totalprice += cartItems[i].totalprice;
                 }
                 await axios.put('http://localhost:3001/cancelOrder', {
-                    username: sessionStorage.getItem("Username"),
                     orderid: id,
                     totalprice: totalprice,
-                });
+                }, { headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` }, });
                 setOrderStatus((prevOrderStatus) => ({
                     ...prevOrderStatus,
                     [id]: 'Cancelled',

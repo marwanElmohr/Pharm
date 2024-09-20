@@ -3,23 +3,9 @@ import '../Pages/Patient/Patient.scss';
 import '../Pages/Admin/Admin.scss';
 import '../Pages/Bootstrap.scss';
 import Sidebar from "../MainPatient/SidebarHome";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
 import {
-    Card,
-    CardHeader,
-    Input,
     Typography,
     Button,
-    CardBody,
-    Chip,
-    CardFooter,
-    Tabs,
-    TabsHeader,
-    Tab,
-    Avatar,
-    IconButton,
-    Tooltip,
 } from "@material-tailwind/react";
 
 export default function DoctorDashboard() {

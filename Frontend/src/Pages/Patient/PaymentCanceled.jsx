@@ -16,14 +16,13 @@ function PaymentCanceled() {
         async function fetchData() {
             try {
                 if (!reload) {
-                    let username = sessionStorage.getItem("Username");
 
-                    const res = await axios.put("http://localhost:3001/popOrder", { username });
+                    const res = await axios.put("http://localhost:3001/popOrder", { headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` } });
 
                     console.log('Order deleted successfully:', res.data);
 
                     const result = await axios.get("http://localhost:3001/getcart", {
-                        params: { username }
+                        headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` }
                     });
 
                     console.log('Cart fetched successfully:', result.data);
