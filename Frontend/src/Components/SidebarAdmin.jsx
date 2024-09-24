@@ -14,12 +14,11 @@ const Sidebar = () => {
 
   const getUserInfo = async () => {
     try {
-      if (!sessionStorage.getItem("Username")) {
+      if (!localStorage.getItem("token")) {
         setUserInfo([]);
       } else {
-        let username = sessionStorage.getItem("Username");
         const res = await axios.get("http://localhost:3001/getOneAdmin", {
-          params: { username }
+          headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` }
         });
         setUserInfo(res.data);
       }
@@ -44,6 +43,35 @@ const Sidebar = () => {
             </div>
             <div className="navbar-collapse w-1/2 flex justify-content-end pe-3" id="navbarExample01">
               <ul className="navbar-nav mb-2 mb-lg-0">
+                <li className="nav-item px-1">
+                  <a className="nav-link" aria-current="page" href="/ViewAdminInfoAdmin">
+                    View Admins
+                  </a>
+                </li>
+                <li className="nav-item px-1">
+                  <a className="nav-link" aria-current="page" href="/ViewPharmInfoAdmin">
+                    View Pharmacists
+                  </a>
+                </li><li className="nav-item px-1">
+                  <a className="nav-link" aria-current="page" href="/ViewPharmInfoAdmin">
+                    View Pharmacists
+                  </a>
+                </li>
+                <li className="nav-item px-1">
+                  <a className="nav-link" aria-current="page" href="/ViewPatientInfoAdmin">
+                    View Patients
+                  </a>
+                </li>
+                <li className="nav-item px-1">
+                  <a className="nav-link" aria-current="page" href="/ViewMedAdmin">
+                    View Medicines
+                  </a>
+                </li>
+                <li className="nav-item pl-1 pr-4">
+                  <a className="nav-link" aria-current="page" href="/ViewSalesAdmin">
+                    Sales Report
+                  </a>
+                </li>
                 <li className="nav-item dropdown group relative">
                   <a
                     className="nav-link dropdown-toggle flex items-center"
@@ -56,7 +84,7 @@ const Sidebar = () => {
                   >
                     <FontAwesomeIcon icon={faUser} className="mr-2" />
                     <span>
-                      {sessionStorage.getItem("Username")}
+                      {userInfo.Username}
                     </span>
                   </a>
                   <div className="dropdown-menu absolute hidden group-hover:block right-0 p-3 shadow-lg" aria-labelledby="navbarDropdown">
@@ -67,9 +95,7 @@ const Sidebar = () => {
                       aria-current="page"
                       href="/"
                       onClick={() => {
-                        sessionStorage.removeItem("Username");
-                        sessionStorage.removeItem("type");
-                        sessionStorage.removeItem("token");
+                        localStorage.clear();
                       }}
                     >
                       Log Out

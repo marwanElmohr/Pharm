@@ -111,7 +111,7 @@ const signin = async (req, res) => {
     const username = req.body.Username;
     const password = req.body.Password;
 
-    const user = await Patient.findOne({ Username: username });
+    let user = await Patient.findOne({ Username: username });
 
     let isValid;
     if (user) {
@@ -129,16 +129,10 @@ const signin = async (req, res) => {
         if (user) {
             isValid = await comparePassword(password, user.Password);
             if (isValid) {
-                if (user.ReqStatus == "Accepted") {
-                    res.status(200).send({
-                        type: "Pharmacist",
-                        token: jwt.sign({ userId: user._id }, process.env.JWT_SECRETPH, { expiresIn: '2h' }),
-                    });
-                } else {
-                    res.status(200).send({
-                        type: "PendingPharmacist",
-                    });
-                }
+                res.status(200).send({
+                    type: "Pharmacist",
+                    token: jwt.sign({ userId: user._id }, process.env.JWT_SECRETPH),
+                });
             } else {
                 res.status(401).send("Invalid password");
             }
@@ -149,7 +143,7 @@ const signin = async (req, res) => {
                 if (isValid) {
                     res.status(200).send({
                         type: "Admin",
-                        token: jwt.sign({ userId: user._id }, process.env.JWT_SECRETA, { expiresIn: '2h' }),
+                        token: jwt.sign({ userId: user._id }, process.env.JWT_SECRETA),
                     });
                 } else {
                     res.status(401).send("Invalid password");

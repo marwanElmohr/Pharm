@@ -78,8 +78,9 @@ const deleteAdmin = async (req, res) => {
 };
 
 const getOneAdmin = async (req, res) => {
-  const username = req.query.username;
-  const user = await Admin.findOne({ Username: username });
+  const token = req.headers.authorization?.split(' ')[1];
+  const decoded = jwt.verify(token, process.env.JWT_SECRETA);
+  const user = await Admin.findById(decoded.userId);
   res.status(200).json(user);
 };
 

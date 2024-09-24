@@ -46,22 +46,24 @@ const getPharmacists = async (req, res) => {
 
 const updatePharmacist = async (req, res) => {
   try {
-    const user = req.body.Username;
+    const token = req.headers.authorization?.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRETPH);
+    const username = await Pharmacist.findById(decoded.userId).select('Username');
     if (req.body.Email) {
       await Pharmacist.updateOne(
-        { Username: user },
+        { Username: username },
         { $set: { Email: req.body.Email } }
       );
     }
     if (req.body.Hourlyrate) {
       await Pharmacist.updateOne(
-        { Username: user },
+        { Username: username },
         { $set: { Hourlyrate: req.body.Hourlyrate } }
       );
     }
     if (req.body.Affiliation) {
       await Pharmacist.updateOne(
-        { Username: user },
+        { Username: username },
         { $set: { Affiliation: req.body.Affiliation } }
       );
     }
@@ -70,7 +72,7 @@ const updatePharmacist = async (req, res) => {
         await Pharmacist.deleteOne({ Username: req.body.Username });
       } else {
         await Pharmacist.updateOne(
-          { Username: user },
+          { Username: username },
           { $set: { ReqStatus: req.body.ReqStatus } }
         );
       }
@@ -96,8 +98,9 @@ const deletePharmacist = async (req, res) => {
 };
 
 const getOnePharmacist = async (req, res) => {
-  const username = req.query.username;
-  const user = await Pharmacist.findOne({ Username: username });
+  const token = req.headers.authorization?.split(' ')[1];
+  const decoded = jwt.verify(token, process.env.JWT_SECRETPH);
+  const user = await Pharmacist.findById(decoded.userId);
   res.status(200).json(user);
 };
 

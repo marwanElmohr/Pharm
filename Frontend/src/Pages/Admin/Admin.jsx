@@ -20,9 +20,7 @@ export default function Admin() {
       <Sidebar pageWrapId={"page-wrap"} outerContainerId={"outer-container"} />
       <div className="footer mt-20">
         <div className="headers">
-          <h3>Choose one of our services
-            {/* <br></br>What You Need..<a href="https://www.youtube.com/watch?v=NlkYOKr2JXE&ab_channel=naz">.</a> */}
-          </h3>
+          <h3>Choose one of our services</h3>
         </div>
         <div className="footer-in row">
           <div className="col-4 text-center d-flex flex-column align-items-center bg-sky-50">

@@ -1,45 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Sidebar from "../../Components/SidebarPharm";
 import NotificationPopup from "./NotificationPopup";
 import './Pharm.scss'
 import '../Bootstrap.scss'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from 'axios';
 import {
   faHandHoldingMedical,
   faSyringe,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function Pharm() {
-  const [randomPointsInWallet, setRandomPointsInWallet] = useState(0);
   const [notifications, setNotifications] = useState([]);
-  useEffect(() => {
-    getWalletValue();
-    getOnePharmacist();
-  }, []);
-
-  const getWalletValue = async () => {
-    try {
-      let username = sessionStorage.getItem("Username");
-      const res = await axios.get("http://localhost:3001/getWalletPharm", {
-        params: { username }
-      });
-      console.log("Wallet data from the server:", res.data);
-      setRandomPointsInWallet(res.data);
-    } catch (error) {
-      console.error("Error updating data:", error);
-    }
-  };
-
-  const getOnePharmacist = async () => {
-    try {
-      let username = sessionStorage.getItem("Username");
-      const res = await axios.get("http://localhost:3001/getOnePharmacist", { params: { username } });
-      setNotifications(res.data.Notifications);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
   return (
     <div className="Bootstrap Pharm">

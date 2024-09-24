@@ -144,7 +144,7 @@ export default function MedTablePrescriptions() {
   };
 
   const handleAddToCart = async (name, price, availableQuantity) => {
-    if (sessionStorage.getItem("type") === "Patient") {
+    if (localStorage.getItem("type") === "Patient") {
       try {
         if (availableQuantity > 0) {
           // Disable the button temporarily
