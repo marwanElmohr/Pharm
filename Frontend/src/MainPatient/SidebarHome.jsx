@@ -69,7 +69,7 @@ const Sidebar = () => {
             </div>
 
             <div className="w-1/2">
-              <a href="/" className="flex justify-content-end w-full"><Logo height='4rem' className="mt-6 mb-0" /></a>
+              <a href="/Patient" className="flex justify-content-end w-full"><Logo height='4rem' className="mt-6 mb-0" /></a>
             </div>
             <div className="navbar-collapse w-1/2 flex justify-content-end pe-3" id="navbarExample01">
               <ul className="navbar-nav mb-2 mb-lg-0">

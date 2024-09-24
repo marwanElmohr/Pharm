@@ -271,13 +271,15 @@ const deletePatient = async (req, res) => {
 
 const getOrder = async (req, res) => {
   const token = req.headers.authorization?.split(' ')[1];
+  if (!token)
+    return res.status(404).send("User not found");
   const decoded = jwt.verify(token, process.env.JWT_SECRETP);
   const user = await Patient.findById(decoded.userId);
   let orders = [];
   if (user.Orders) {
     orders = user.Orders;
   }
-  res.status(200).send(orders);
+  return res.status(200).send(orders);
 };
 
 const addOrder = async (req, res) => {
@@ -420,7 +422,7 @@ const getWallet = async (req, res) => {
   if (!user) {
     return res.status(404).send("User not found");
   }
-  
+
   wallet = user.Wallet;
   res.status(200).json(wallet);
 };
@@ -497,7 +499,7 @@ const getOnePatient = async (req, res) => {
   try {
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) {
-      return res.status(401).json({ message: 'Unauthorized' });
+      return res.status(404).send("User not found");
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRETP);

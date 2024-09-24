@@ -119,7 +119,7 @@ const signin = async (req, res) => {
         if (isValid) {
             return res.status(200).send({
                 type: "Patient",
-                token: jwt.sign({ userId: user._id }, process.env.JWT_SECRETP, { expiresIn: '2h' }),
+                token: jwt.sign({ userId: user._id }, process.env.JWT_SECRETP),
             });
         } else {
             return res.status(401).send("Invalid password");
