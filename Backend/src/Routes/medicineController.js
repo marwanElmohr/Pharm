@@ -330,6 +330,7 @@ const getOneMedicine = async (req, res) => {
     let medicine = {
       Name: user.Name,
       Description: user.Description,
+      Quantity: user.Quantity,
       Price: user.Price,
       Picture: user.Picture,
     };

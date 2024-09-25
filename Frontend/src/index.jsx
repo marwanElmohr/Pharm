@@ -97,6 +97,8 @@ if (localStorage.getItem("type") === null || localStorage.getItem("type") === "P
       <BrowserRouter>
         <Routes>
           <Route path="/Patient" element={<App />} />
+          <Route path="/MedicinesPage" element={<MedicinesPage />} />
+          <Route path="/OneMedicine" element={<OneMedicine />} />
           <Route path="/ViewMedPatient" element={<ViewMedPatient />} />
           <Route path="/ViewMedPrescriptions" element={<ViewMedPrescription />} />
           <Route path="/Alternatives" element={<Alternatives />} />

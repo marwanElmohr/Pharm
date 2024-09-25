@@ -25,17 +25,58 @@ export default function MedicineCategory() {
     const [medicineData, setMedicineData] = useState({
         Name: '',
         Description: '',
+        Quantity: 0,
         Price: 0,
         Picture: ''
     });
+    const [quantity, setQuantity] = useState(1);
+    const [addedToCart, setAddedToCart] = useState(false);
+
+    const incrementQuantity = () => {
+        if (quantity < medicineData.Quantity) {
+            setQuantity((prevQuantity) => prevQuantity + 1);
+        }
+    };
+
+    const decrementQuantity = () => {
+        if (quantity > 1 && medicineData.Quantity > 0) {
+            setQuantity((prevQuantity) => prevQuantity - 1);
+        }
+    };
+
+    const handleAddToCart = async () => {
+        if (localStorage.getItem("type") === "Patient") {
+            try {
+                if (medicineData.Quantity > 0) {
+                    setAddedToCart(true);
+
+                    axios.put("http://localhost:3001/updatePatient", {
+                        medicinename: medicineData.Name,
+                        quantity: quantity,
+                        price: medicineData.Price,
+                    }, { headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` }, });
+                    console.log("Update request sent successfully");
+
+                    setTimeout(() => { setAddedToCart(false) }, 500);
+
+                } else {
+                    console.log("Cannot add to cart. Insufficient quantity.");
+                }
+            } catch (error) {
+                console.error("Error updating data:", error);
+            }
+        } else {
+            window.location.href = "/login";
+        }
+    };
 
     useEffect(() => {
         if (medicineId) {
             axios.get(`http://localhost:3001/getOneMedicine?medicinename=${medicineId}`)
                 .then((response) => {
-                    const { Name, Description, Price, Picture } = response.data;
+                    const { Name, Description, Quantity, Price, Picture } = response.data;
                     console.log(response.data);
-                    setMedicineData({ Name, Description, Price, Picture });
+                    setMedicineData({ Name, Description, Quantity, Price, Picture });
                 })
                 .catch((error) => {
                     console.error("There was an error fetching the medicine data!", error);
@@ -78,18 +119,18 @@ export default function MedicineCategory() {
                             </div>
                         </div>
                         <div className="flex justify-center border-t flex flex-col mt-auto mb-12">
-                            <div className="flex flex-row w-full py-4">
-                                <button className="justify-end w-4 h-4 pl-5">
+                            <div className="flex flex-row w-full py-4 pl-2 justify-between items-center">
+                                <button className={`w-8 h-8 ${quantity === 1 ? 'text-gray-400' : 'text-black'}`} onClick={decrementQuantity} disabled={quantity === 1}>
                                     <FontAwesomeIcon icon={faCircleMinus} />
                                 </button>
-                                <label className="text-grey px-32 text-xl"> {3} </label>
-                                <button className="justify-end w-4 h-4 pr-5'">
+                                <label className="text-grey text-xl text-center"> {quantity} </label>
+                                <button className={`w-8 h-8 ${quantity >= medicineData.Quantity ? 'text-gray-400' : 'text-black'}`} onClick={incrementQuantity} disabled={quantity >= medicineData.Quantity}>
                                     <FontAwesomeIcon icon={faCirclePlus} />
                                 </button>
                             </div>
                             <div>
                                 <a>
-                                    <button className="justify-end bg-sky-600 text-white w-80 h-10 rounded-md mb-2 mt-0.5">
+                                    <button className={`justify-end text-white w-80 h-10 rounded-md mb-2 mt-0.5 ${addedToCart ? 'bg-gray-600' : 'bg-sky-600'}`} onClick={() => handleAddToCart()} disabled={addedToCart}>
                                         <FontAwesomeIcon icon={faBasketShopping} /> Add to Cart
                                     </button>
                                 </a>
