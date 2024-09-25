@@ -52,10 +52,6 @@ const Sidebar = () => {
                   <a className="nav-link" aria-current="page" href="/ViewPharmInfoAdmin">
                     View Pharmacists
                   </a>
-                </li><li className="nav-item px-1">
-                  <a className="nav-link" aria-current="page" href="/ViewPharmInfoAdmin">
-                    View Pharmacists
-                  </a>
                 </li>
                 <li className="nav-item px-1">
                   <a className="nav-link" aria-current="page" href="/ViewPatientInfoAdmin">

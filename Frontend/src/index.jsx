@@ -30,7 +30,6 @@ import ViewSales from './Pages/Pharmacist/ViewSales';
 import ViewSalesAdmin from './Pages/Admin/ViewSalesAdmin';
 import ViewMedPrescription from './Pages/Patient/ViewMedPrescription';
 import Alternatives from './Pages/Patient/Alternatives';
-import MedicineCategory from './MainPatient/MedicineCategory';
 import OneMedicine from './MainPatient/OneMedicine';
 import DoctorDashboard from './MainDoctor/DoctorDashboard';
 import MedicinesPage from './MainPatient/MedicinesPage';
@@ -44,7 +43,6 @@ if (localStorage.getItem("type") === null || localStorage.getItem("type") === "P
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />} />
-          <Route path="/MedicineCategory" element={<MedicineCategory />} />
           <Route path="/OneMedicine" element={<OneMedicine />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/AddPatient" element={<AddPatient />} />
@@ -99,7 +97,6 @@ if (localStorage.getItem("type") === null || localStorage.getItem("type") === "P
       <BrowserRouter>
         <Routes>
           <Route path="/Patient" element={<App />} />
-          <Route path="/MedicineCategory" element={<MedicineCategory />} />
           <Route path="/ViewMedPatient" element={<ViewMedPatient />} />
           <Route path="/ViewMedPrescriptions" element={<ViewMedPrescription />} />
           <Route path="/Alternatives" element={<Alternatives />} />

@@ -191,7 +191,7 @@ app.put("/updatePharmacist", updatePharmacist);
 app.delete("/deletePharmacist", deletePharmacist);
 app.get("/getOnePharmacist", getOnePharmacist);
 app.put("/notifyOutOfStock", notifyOutOfStock);
-app.get("/getBoolean", getOneMedicine);
+app.get("/getOneMedicine", getOneMedicine);
 app.get("/showAlternatives", showAlternatives);
 
 app.post("/addMedicine", createMedicine);

@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "./SidebarHome";
 import Footer from "../Components/Footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faArrowLeft,
-    faBasketShopping
+    faBasketShopping,
+    faCirclePlus,
+    faCircleMinus
 } from "@fortawesome/free-solid-svg-icons";
 import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 import {
     Card,
@@ -18,43 +20,80 @@ import {
 export default function MedicineCategory() {
     const { search } = useLocation();
     const query = new URLSearchParams(search);
-    const medicine = query.get('medicine');
+    // const medicineId = query.get('medicine');
+    const medicineId = "Sublocade";
+    const [medicineData, setMedicineData] = useState({
+        Name: '',
+        Description: '',
+        Price: 0,
+        Picture: ''
+    });
+
+    useEffect(() => {
+        if (medicineId) {
+            axios.get(`http://localhost:3001/getOneMedicine?medicinename=${medicineId}`)
+                .then((response) => {
+                    const { Name, Description, Price, Picture } = response.data;
+                    console.log(response.data);
+                    setMedicineData({ Name, Description, Price, Picture });
+                })
+                .catch((error) => {
+                    console.error("There was an error fetching the medicine data!", error);
+                });
+        }
+    }, []);
 
     return (
         <div>
             <Sidebar pageWrapId={'page-wrap'} outerContainerId={'outer-container'} />
-            <div className="footer px-32 container-fluid">
-                <Card className="flex flex-row">
-                    <div className="w-1/2 border-r p-12">
+            <div className="footer px-32 py-12 container-fluid border-b">
+                <Card className="flex flex-row shadow-md" style={{ boxShadow: '0 -1px 4px -1px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06)' }}>
+                    <div className="w-1/2 border-r flex justify-center items-center">
                         <CardHeader
                             floated={false}
                             shadow={false}
                             color="transparent"
-                            className="m-0 rounded-none"
+                            className="m-0 rounded-none py-12"
                         >
                             <img
-                                src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80"
-                                alt="ui/ux review check"
+                                src={medicineData.Picture}
+                                alt={medicineData.Name}
                             />
                         </CardHeader>
                     </div>
                     <div className="w-1/2 flex flex-col px-40">
-                        <div className="flex justify-center">
-                            <CardBody>
-                                <Typography variant="h4" color="blue-gray" vl>
-                                    UI/UX Review Check
-                                </Typography>
-                            </CardBody>
+                        <div className="flex-grow">
+                            <div className="flex justify-center">
+                                <CardBody className="flex-grow">
+                                    <h3 color="blue-gray" className="font-bold text-center text-4xl pt-6">
+                                        {medicineData.Name}
+                                    </h3>
+                                    <p className="text-sm my-5">
+                                        {medicineData.Description}
+                                    </p>
+                                </CardBody>
+                            </div>
+                            <div className="flex justify-end text-xl">
+                                <label className="font-bold">$</label><label><a>{medicineData.Price}</a></label>
+                            </div>
                         </div>
-                        <div className="flex justify-end">
-                            <label className="font-bold ">$</label><label><a>122</a></label>
-                        </div>
-                        <div className="flex justify-center">
-                            <a>
-                                <button className="justify-end bg-sky-600 text-white w-80 h-10 rounded-md mb-2 mt-0.5">
-                                    <FontAwesomeIcon icon={faBasketShopping} /> Add to Cart
+                        <div className="flex justify-center border-t flex flex-col mt-auto mb-12">
+                            <div className="flex flex-row w-full py-4">
+                                <button className="justify-end w-4 h-4 pl-5">
+                                    <FontAwesomeIcon icon={faCircleMinus} />
                                 </button>
-                            </a>
+                                <label className="text-grey px-32 text-xl"> {3} </label>
+                                <button className="justify-end w-4 h-4 pr-5'">
+                                    <FontAwesomeIcon icon={faCirclePlus} />
+                                </button>
+                            </div>
+                            <div>
+                                <a>
+                                    <button className="justify-end bg-sky-600 text-white w-80 h-10 rounded-md mb-2 mt-0.5">
+                                        <FontAwesomeIcon icon={faBasketShopping} /> Add to Cart
+                                    </button>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </Card>

@@ -38,12 +38,12 @@ export const getSidebarData = async () => {
             const subNav = subcategories.length > 0 ? [
                 {
                     title: "All Items",
-                    path: `/MedicineCategory?category=${encodeURIComponent(category.Name)}`,
+                    path: `/MedicinesPage?category=${encodeURIComponent(category.Name)}`,
                     icon: <FontAwesomeIcon icon={faTablets} size='2xs' style={{ color: "#0284C7" }} />,
                 },
                 ...subcategories.map((sub) => ({
                     title: sub,
-                    path: `/MedicineCategory?category=${encodeURIComponent(category.Name)}&subcategory=${encodeURIComponent(sub)}`,
+                    path: `/MedicinesPage?category=${encodeURIComponent(category.Name)}&subcategory=${encodeURIComponent(sub)}`,
                     icon: <FontAwesomeIcon icon={faTablets} size='2xs' style={{ color: "#0284C7" }} />,
                 }))
             ] : undefined;
@@ -53,7 +53,7 @@ export const getSidebarData = async () => {
 
             return {
                 title: category.Name,
-                path: `/MedicineCategory?category=${encodeURIComponent(category.Name)}`,
+                path: `/MedicinesPage?category=${encodeURIComponent(category.Name)}`,
                 iconClosed,
                 iconOpened,
                 subNav,

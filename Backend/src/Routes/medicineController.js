@@ -321,10 +321,22 @@ const reverseQuantity = async (req, res) => {
 };
 
 const getOneMedicine = async (req, res) => {
-  const name = req.query.medicinename;
-  const user = await Medicine.findOne({ Name: name });
-  let overthecounter = user.OverTheCounter;
-  res.status(200).json(overthecounter);
+  try {
+    const name = req.query.medicinename;
+    const user = await Medicine.findOne({ Name: name });
+    if(!user) {
+      res.status(400).send("Error could not get Medicine !!");
+    }
+    let medicine = {
+      Name: user.Name,
+      Description: user.Description,
+      Price: user.Price,
+      Picture: user.Picture,
+    };
+    res.status(200).send(medicine);
+  } catch {
+    res.status(400).send("Error could not get Medicine !!");
+  }
 };
 
 const getAllMedicines = async (req, res) => {
