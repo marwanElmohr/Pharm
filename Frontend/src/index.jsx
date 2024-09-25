@@ -33,6 +33,7 @@ import Alternatives from './Pages/Patient/Alternatives';
 import MedicineCategory from './MainPatient/MedicineCategory';
 import OneMedicine from './MainPatient/OneMedicine';
 import DoctorDashboard from './MainDoctor/DoctorDashboard';
+import MedicinesPage from './MainPatient/MedicinesPage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -50,6 +51,7 @@ if (localStorage.getItem("type") === null || localStorage.getItem("type") === "P
           <Route path="/ResetPass" element={<ResetPass />} />
           <Route path="/AddPharmacist" element={<AddPharmacist />} />
           <Route path="/DoctorDashboard" element={<DoctorDashboard />} />
+          <Route path="/MedicinesPage" element={<MedicinesPage />} />
         </Routes>
       </BrowserRouter>
     </React.StrictMode>
