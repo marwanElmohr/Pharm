@@ -3,9 +3,8 @@ import GetMedicine from "../Pages/getMedicine";
 import GetMedicinalUse from "../Pages/getMedicinalUses";
 import Sidebar from "./SidebarHome";
 import Footer from "../Components/Footer";
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-
 
 export default function MedicinesPage() {
     const [name, setName] = useState();
@@ -42,34 +41,44 @@ export default function MedicinesPage() {
         });
     };
 
+    // Function to handle click and navigate to OneMedicine with state
+    const handleProductClick = (product) => {
+        navigate('/OneMedicine', { state: { product } });
+    };
+
     const handleAddToCart = async (name, price, availableQuantity) => {
+        // Check if the user is a "Patient" (stored in localStorage)
         if (localStorage.getItem("type") === "Patient") {
             try {
+                // Only proceed if there is available quantity
                 if (availableQuantity > 0) {
-                    // Disable the button temporarily
+                    // Disable the button temporarily for the added product
                     setAddedToCart((prevAddedToCart) => ({
                         ...prevAddedToCart,
                         [name]: true,
                     }));
-
-                    // Update the cart
-                    axios.put("http://localhost:3001/updatePatient", {
+    
+                    // Make a PUT request to update the patient's cart
+                    await axios.put("http://localhost:3001/updatePatient", {
                         medicinename: name,
-                        quantity: 1,
+                        quantity: 1, // Default to adding 1 quantity
                         price: price,
-                    }, { headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` }, });
+                    }, { 
+                        headers: { 
+                            'Authorization': `Bearer ${localStorage.getItem("token")}` 
+                        },
+                    });
                     console.log("Update request sent successfully");
-
-                    // Wait for 2 seconds
+    
+                    // Re-enable the button after 500 milliseconds
                     setTimeout(() => {
-                        // Enable the button after 2 seconds
                         setAddedToCart((prevAddedToCart) => ({
                             ...prevAddedToCart,
                             [name]: false,
                         }));
                     }, 500);
                 } else {
-                    setShowAlternatives(true);
+                    setShowAlternatives(true); // Show alternatives if no stock
                     console.log("Cannot add to cart. Insufficient quantity.");
                 }
             } catch (error) {
@@ -77,7 +86,7 @@ export default function MedicinesPage() {
             }
         }
     };
-
+    
     if (Medicine) {
         return (
             <div>
@@ -87,14 +96,18 @@ export default function MedicinesPage() {
                         <h2 class="font-manrope font-bold text-3xl min-[400px]:text-4xl text-black mb-8 max-lg:text-center">Available Products</h2>
                         <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-6">
                             {Medicine.map((p, index) => (
-                                <a key={index} href="/OneMedicine" className="bg-white border border-gray-200 sm:hover:shadow-lg rounded-xl p-4 transition-transform transform lg:hover:shadow-lg lg:hover:scale-105">
+                                <div 
+                                    key={index} 
+                                    className="bg-white border border-gray-200 sm:hover:shadow-lg rounded-xl p-4 transition-transform transform lg:hover:shadow-lg lg:hover:scale-105 cursor-pointer"
+                                    onClick={() => handleProductClick(p)} // On click, navigate with product details
+                                >
                                     <div className="w-full aspect-square">
                                         {p.Picture ? (
                                             <img
                                                 src={
                                                     p.Picture.startsWith("http")
-                                                        ? p.Picture // External URL
-                                                        : `http://localhost:3001/uploads/${p.Picture.substring(p.Picture.lastIndexOf('/') + 1, p.Picture.lastIndexOf('-Picture'))}-Picture.jpg` // Local image
+                                                        ? p.Picture
+                                                        : `http://localhost:3001/uploads/${p.Picture.substring(p.Picture.lastIndexOf('/') + 1, p.Picture.lastIndexOf('-Picture'))}-Picture.jpg`
                                                 }
                                                 alt={p.Name}
                                                 className="w-full h-full rounded-xl object-cover"
@@ -111,7 +124,10 @@ export default function MedicinesPage() {
                                             </h6>
                                             {p.Quantity > 0 ? (
                                                 <button className="p-2 min-[400px]:p-4 rounded-full bg-white border border-gray-300 flex items-center justify-center group shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-200 hover:border-gray-400 hover:bg-gray-50"
-                                                    onClick={() => handleAddToCart(p.Name, p.Price, p.Quantity)}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation(); // Prevent triggering the parent div click event
+                                                        handleAddToCart(p.Name, p.Price, p.Quantity);
+                                                    }}
                                                     disabled={p.Quantity === 0}>
                                                     <svg className="stroke-gray-900 transition-all duration-500 group-hover:stroke-black" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
                                                         <path d="M12.6892 21.125C12.6892 22.0225 11.9409 22.75 11.0177 22.75C10.0946 22.75 9.34632 22.0225 9.34632 21.125M19.3749 21.125C19.3749 22.0225 18.6266 22.75 17.7035 22.75C16.7804 22.75 16.032 22.0225 16.032 21.125M4.88917 6.5L6.4566 14.88C6.77298 16.5715 6.93117 17.4173 7.53301 17.917C8.13484 18.4167 8.99525 18.4167 10.7161 18.4167H18.0056C19.7266 18.4167 20.587 18.4167 21.1889 17.9169C21.7907 17.4172 21.9489 16.5714 22.2652 14.8798L22.8728 11.6298C23.3172 9.25332 23.5394 8.06508 22.8896 7.28254C22.2398 6.5 21.031 6.5 18.6133 6.5H4.88917ZM4.88917 6.5L4.33203 3.25" stroke="" stroke-width="1.6" stroke-linecap="round" />
@@ -119,14 +135,12 @@ export default function MedicinesPage() {
                                                 </button>
                                             ) : (
                                                 <button className="p-2 w-full min-[400px]:p-4 rounded-full bg-white border border-gray-300 flex items-center justify-center group shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-200 hover:border-gray-400 hover:bg-gray-50"
-                                                    onClick={() => handleAddToCart(p.Name, p.Price, p.Quantity)}
                                                     disabled={p.Quantity === 0}>Out of Stock</button>
                                             )}
                                         </div>
                                     </div>
-                                </a>
+                                </div>
                             ))}
-
                         </div>
                     </div>
                 </section>

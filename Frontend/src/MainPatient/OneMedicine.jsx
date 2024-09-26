@@ -2,33 +2,15 @@ import React, { useState, useEffect } from "react";
 import Sidebar from "./SidebarHome";
 import Footer from "../Components/Footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faBasketShopping,
-    faCirclePlus,
-    faCircleMinus
-} from "@fortawesome/free-solid-svg-icons";
+import { faBasketShopping, faCirclePlus, faCircleMinus } from "@fortawesome/free-solid-svg-icons";
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { Card, CardHeader, CardBody } from "@material-tailwind/react";
 
-import {
-    Card,
-    CardHeader,
-    CardBody,
-    Typography,
-} from "@material-tailwind/react";
 
 export default function MedicineCategory() {
-    const { search } = useLocation();
-    const query = new URLSearchParams(search);
-    // const medicineId = query.get('medicine');
-    const medicineId = "Sublocade";
-    const [medicineData, setMedicineData] = useState({
-        Name: '',
-        Description: '',
-        Quantity: 0,
-        Price: 0,
-        Picture: ''
-    });
+    const { state } = useLocation(); // Get state from navigate
+    const medicineData = state?.product || {}; // Retrieve product from state or set an empty object as fallback
     const [quantity, setQuantity] = useState(1);
     const [addedToCart, setAddedToCart] = useState(false);
 
@@ -69,20 +51,6 @@ export default function MedicineCategory() {
             window.location.href = "/login";
         }
     };
-
-    useEffect(() => {
-        if (medicineId) {
-            axios.get(`http://localhost:3001/getOneMedicine?medicinename=${medicineId}`)
-                .then((response) => {
-                    const { Name, Description, Quantity, Price, Picture } = response.data;
-                    console.log(response.data);
-                    setMedicineData({ Name, Description, Quantity, Price, Picture });
-                })
-                .catch((error) => {
-                    console.error("There was an error fetching the medicine data!", error);
-                });
-        }
-    }, []);
 
     return (
         <div>
