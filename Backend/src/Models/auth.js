@@ -3,6 +3,7 @@ var bcrypt = require("bcrypt");
 const Admin = require("./Admin.js")
 const Pharmacist = require("./Pharmacist.js");
 const Patient = require("./Patient.js");
+const Doctor = require("./Doctor.js");
 const hashPassword = async (password) => {
     return bcrypt.hash(password, 5);
 };
@@ -149,7 +150,20 @@ const signin = async (req, res) => {
                     res.status(401).send("Invalid password");
                 }
             } else {
-                res.status(401).send("User not found");
+                user = await Doctor.findOne({ Username: username });
+                if (user) {
+                    isValid = await comparePassword(password, user.Password);
+                    if (isValid) {
+                        res.status(200).send({
+                            type: "Doctor",
+                            token: jwt.sign({ userId: user._id }, process.env.JWT_SECRETA),
+                        });
+                    } else {
+                        res.status(401).send("Invalid Password");
+                    }
+                } else {
+                    res.status(401).send("User not found");
+                }
             }
         }
     }

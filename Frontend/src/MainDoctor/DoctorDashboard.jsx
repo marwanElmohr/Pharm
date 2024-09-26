@@ -1,22 +1,39 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import '../Pages/Patient/Patient.scss';
 import '../Pages/Admin/Admin.scss';
 import '../Pages/Bootstrap.scss';
-import Sidebar from "../MainPatient/SidebarHome";
+import Sidebar from "../Components/SidebarDoctor";
 import {
     Typography,
     Button,
 } from "@material-tailwind/react";
+import axios from "axios";
 
 export default function DoctorDashboard() {
+    const [patientData, setPatientData] = useState([]);
 
     // Define the table headers
     const TABLE_HEADERS = [
-        { id: 'orderRef', title: 'ORDER REF' },
-        { id: 'customer', title: 'CUSTOMER' },
-        { id: 'date', title: 'DATE' },
-        { id: 'status', title: 'STATUS' },
+        { id: 'username', title: 'Username' },
+        { id: 'name', title: 'Name' },
+        { id: 'phoneNumber', title: 'Phone Number' },
+        { id: 'email', title: 'Email' },
+        { id: 'dob', title: 'Date of Birth' },
+        { id: 'gender', title: 'Gender' },
     ];
+
+    useEffect(() => {
+        axios.get('http://localhost:3001/getPatientNames', {
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        })
+            .then((response) => {
+                console.log(response.data);
+                setPatientData(response.data)
+            })
+            .catch((error) => {
+                console.error("There was an error fetching the patients' data!", error);
+            });
+    }, []);
 
     // Define the data array
     const tableData = [
@@ -81,33 +98,47 @@ export default function DoctorDashboard() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {tableData.map((row, index) => (
+                                        {patientData.map((row, index) => (
                                             <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                                                 <td className="p-0">
                                                     <div className={`h-16 p-6`}>
                                                         <h5 className="text-sm font-medium text-gray-800">
-                                                            {row.orderRef}
+                                                            {row.username}
                                                         </h5>
                                                     </div>
                                                 </td>
                                                 <td className="p-0">
                                                     <div className={`h-16 p-6`}>
-                                                        <div className="flex h-full items-center">
-                                                            <img
-                                                                className="w-8 h-8 mr-3 rounded-full object-cover"
-                                                                src={row.customerImage}
-                                                                alt={row.customerName}
-                                                            />
-                                                            <span className="text-sm font-medium text-gray-800">
-                                                                {row.customerName}
-                                                            </span>
-                                                        </div>
+                                                        <h5 className="text-sm font-medium text-gray-800">
+                                                            {row.name}
+                                                        </h5>
                                                     </div>
                                                 </td>
                                                 <td className="p-0">
                                                     <div className={`h-16 p-6`}>
                                                         <span className="text-sm text-gray-800 font-medium">
-                                                            {row.date}
+                                                            {row.phoneNumber}
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                                <td className="p-0">
+                                                    <div className={`h-16 p-6`}>
+                                                        <span className="text-sm text-gray-800 font-medium">
+                                                            {row.email}
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                                <td className="p-0">
+                                                    <div className={`h-16 p-6`}>
+                                                        <span className="text-sm text-gray-800 font-medium">
+                                                            {row.Gender}
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                                <td className="p-0">
+                                                    <div className={`h-16 p-6`}>
+                                                        <span className="text-sm text-gray-800 font-medium">
+                                                            {row.DOB}
                                                         </span>
                                                     </div>
                                                 </td>

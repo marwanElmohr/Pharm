@@ -49,7 +49,8 @@ const getPrescriptionsDoctor = async (req, res) => {
 
 const addPrescriptions = async (req, res) => {
     try {
-        const { Doctor, Patient, Status, RequiredMedicines } = req.body;
+        const { Doctor, Patient, RequiredMedicines, Notes } = req.body;
+        const Status = "Unfilled";
 
         const newPrescription = new Prescriptions({
             Doctor,
@@ -57,7 +58,8 @@ const addPrescriptions = async (req, res) => {
             Status,
             Date: new Date(),
             Submitted: false,
-            RequiredMedicines
+            RequiredMedicines, 
+            Notes,
         });
 
         await newPrescription.save();

@@ -37,6 +37,10 @@ const prescriptionsSchema = new Schema(
                     },
                 }
             ],
+        }, 
+        Notes: {
+            type: String,
+            required: false,
         }
     },
     { timestamps: true }

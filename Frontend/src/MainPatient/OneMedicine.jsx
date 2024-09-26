@@ -9,13 +9,13 @@ import { Card, CardHeader, CardBody } from "@material-tailwind/react";
 
 
 export default function MedicineCategory() {
-    const { state } = useLocation(); // Get state from navigate
-    const medicineData = state?.product || {}; // Retrieve product from state or set an empty object as fallback
+    const { state } = useLocation();
+    const medicineData = state?.product || {};
     const [quantity, setQuantity] = useState(1);
     const [addedToCart, setAddedToCart] = useState(false);
 
     const incrementQuantity = () => {
-        if (quantity < medicineData.Quantity) {
+        if (quantity <= medicineData.Quantity) {
             setQuantity((prevQuantity) => prevQuantity + 1);
         }
     };
@@ -92,7 +92,7 @@ export default function MedicineCategory() {
                                     <FontAwesomeIcon icon={faCircleMinus} />
                                 </button>
                                 <label className="text-grey text-xl text-center"> {quantity} </label>
-                                <button className={`w-8 h-8 ${quantity >= medicineData.Quantity ? 'text-gray-400' : 'text-black'}`} onClick={incrementQuantity} disabled={quantity >= medicineData.Quantity}>
+                                <button className={`w-8 h-8 ${quantity > medicineData.Quantity ? 'text-gray-400' : 'text-black'}`} onClick={incrementQuantity} disabled={quantity > medicineData.Quantity}>
                                     <FontAwesomeIcon icon={faCirclePlus} />
                                 </button>
                             </div>

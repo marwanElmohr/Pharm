@@ -15,6 +15,7 @@ const {
   updateDoctor,
   findDoctor,
   getPatientNames,
+  getOneDoctor,
 } = require("./Routes/doctorController");
 
 const {
@@ -176,6 +177,7 @@ app.put("/popOrder", popOrder);
 app.get("/getOnePatient", getOnePatient);
 
 app.get("/getAllDoctors", getDoctors);
+app.get("/getOneDoctor", getOneDoctor);
 app.post("/addDoctor", createDoctor);
 app.put("/updateDoctor", updateDoctor);
 

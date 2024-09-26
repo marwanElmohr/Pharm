@@ -154,6 +154,8 @@ class Login extends Component {
                         window.location.replace("/Pharm");
                     } else if (res.data.type == "Admin") {
                         window.location.replace("/Admin");
+                    } else if (res.data.type == "Doctor") {
+                        window.location.replace("/Doctor");
                     } else {
                         this.setState({ error: true });
                         this.setState({ success: false });

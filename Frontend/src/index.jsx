@@ -33,11 +33,12 @@ import Alternatives from './Pages/Patient/Alternatives';
 import OneMedicine from './MainPatient/OneMedicine';
 import DoctorDashboard from './MainDoctor/DoctorDashboard';
 import MedicinesPage from './MainPatient/MedicinesPage';
+import AddPrescriptions from './MainDoctor/addPrescriptions';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 // user hasn't logged in yet or is a pending pharmacist so won't access anything except login, reset password, and register pages.
-if (localStorage.getItem("type") === null || localStorage.getItem("type") === "PendingPharmacist") {
+if (localStorage.getItem("type") === null) {
   root.render(
     <React.StrictMode>
       <BrowserRouter>
@@ -91,7 +92,7 @@ if (localStorage.getItem("type") === null || localStorage.getItem("type") === "P
     </React.StrictMode>
   );
   // if he is a patient a set of routes is only available for him meaning he can't access pharmacists' or admins' routes even if he know the url
-} if (localStorage.getItem("type") === "Patient") {
+} else if (localStorage.getItem("type") === "Patient") {
   root.render(
     <React.StrictMode>
       <BrowserRouter>
@@ -109,6 +110,18 @@ if (localStorage.getItem("type") === null || localStorage.getItem("type") === "P
           <Route path="/PaymentCanceled" element={<PaymentCanceled />} Component={PaymentCanceled} />
           <Route path="/PaymentCashSuccess" element={<PaymentCashSuccess />} />
           <Route path="/changePassword" element={<ChangePassword />} />
+        </Routes>
+      </BrowserRouter>
+    </React.StrictMode>
+  );
+} else if (localStorage.getItem("type") === "Doctor") {
+  root.render(
+    <React.StrictMode>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/Doctor" element={<DoctorDashboard />} />
+          <Route path="/AddPrescriptions" element={<AddPrescriptions />} />
+          <Route path="/ViewPatientInfoAdmin" element={<ViewPatientInfoAdmin />} />
         </Routes>
       </BrowserRouter>
     </React.StrictMode>

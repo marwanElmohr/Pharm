@@ -1,8 +1,9 @@
 const Doctor = require("../Models/Doctor.js");
 const Patient = require("../Models/Patient.js");
 const Admin = require("../Models/Admin.js");
-const { default: mongoose } = require("mongoose");
+const { default: mongoose, get } = require("mongoose");
 var bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken');
 const hashPassword = async (password) => {
   return bcrypt.hash(password, 5);
 };
@@ -39,13 +40,19 @@ const createDoctor = async (req, res) => {
 
 const getPatientNames = async (req, res) => {
   try {
-    const all = await Doctor.findOne({ Username: req.params.Username });
-    let Patients = all.Patients;
+    const token = req.headers.authorization?.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRETA);
+    const user = await Doctor.findById(decoded.userId);
+    let Patients = user.Patients;
     const tmp = [];
     for (let i = 0; i < Patients.length; ++i) {
       tmp.push({
         name: Patients[i].patient.Name,
         username: Patients[i].patient.Username,
+        phoneNumber: Patients[i].patient.phoneNumber,
+        email: Patients[i].patient.Email,
+        DOB: Patients[i].patient.DOB,
+        Gender: Patients[i].patient.Gender,
       });
     }
     res.status(200).send(tmp);
@@ -114,10 +121,18 @@ const findDoctor = async (req, res) => {
   res.status(200).send(doc);
 };
 
+const getOneDoctor = async (req, res) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  const decoded = jwt.verify(token, process.env.JWT_SECRETA);
+  const user = await Doctor.findById(decoded.userId);
+  res.status(200).json(user);
+};
+
 module.exports = {
   createDoctor,
   getDoctors,
   updateDoctor,
   findDoctor,
   getPatientNames,
+  getOneDoctor,
 };
