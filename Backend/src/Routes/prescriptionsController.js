@@ -27,7 +27,7 @@ const getPrescriptions = async (req, res) => {
 
 const getPrescriptionsDoctor = async (req, res) => {
     try {
-        const doctorName = req.query.Doctor; // Avoid redeclaration
+        const doctorName = req.query.Doctor;
         const filter = { Doctor: doctorName };
 
         const prescriptions = await Prescriptions.find(filter);
@@ -37,10 +37,9 @@ const getPrescriptionsDoctor = async (req, res) => {
             return res.status(404).send("Prescription not found for the specified doctor.");
         }
 
-        const allMedicines = prescriptions.flatMap(prescription => prescription.RequiredMedicines || []);
-        const medicineNames = allMedicines.map((medicine) => medicine.name);
+        console.log("Prescription found for doctor:", prescriptions);
 
-        res.status(200).send(medicineNames);
+        res.status(200).send(prescriptions);
     } catch (e) {
         console.error("Error fetching prescription:", e);
         res.status(500).send("Internal Server Error");

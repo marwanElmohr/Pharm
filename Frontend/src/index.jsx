@@ -49,7 +49,6 @@ if (localStorage.getItem("type") === null) {
           <Route path="/AddPatient" element={<AddPatient />} />
           <Route path="/ResetPass" element={<ResetPass />} />
           <Route path="/AddPharmacist" element={<AddPharmacist />} />
-          <Route path="/DoctorDashboard" element={<DoctorDashboard />} />
           <Route path="/MedicinesPage" element={<MedicinesPage />} />
         </Routes>
       </BrowserRouter>

@@ -11,10 +11,12 @@ import axios from "axios";
 
 export default function DoctorDashboard() {
     const [patientData, setPatientData] = useState([]);
+    const [prescriptionData, setPrescriptionData] = useState([]);
+    const [doctorData, setDoctorData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
-    // Define the table headers
     const TABLE_HEADERS = [
-        { id: 'username', title: 'Username' },
         { id: 'name', title: 'Name' },
         { id: 'phoneNumber', title: 'Phone Number' },
         { id: 'email', title: 'Email' },
@@ -22,18 +24,11 @@ export default function DoctorDashboard() {
         { id: 'gender', title: 'Gender' },
     ];
 
-    useEffect(() => {
-        axios.get('http://localhost:3001/getPatientNames', {
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-        })
-            .then((response) => {
-                console.log(response.data);
-                setPatientData(response.data)
-            })
-            .catch((error) => {
-                console.error("There was an error fetching the patients' data!", error);
-            });
-    }, []);
+    const PRES_HEADERS = [
+        { id: 'doctorusername', title: 'Doctor Username' },
+        { id: 'patientusername', title: 'Patient Username' },
+        { id: 'status', title: 'Status' },
+    ];
 
     // Define the data array
     const tableData = [
@@ -63,12 +58,60 @@ export default function DoctorDashboard() {
         },
     ];
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                if (localStorage.getItem('token')) {
+                    setLoading(true);
+                    const patientsResponse = await axios.get('http://localhost:3001/getPatientNames', {
+                        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+                    });
+                    setPatientData(patientsResponse.data);
+
+                    const doctorResponse = await axios.get('http://localhost:3001/getOneDoctor', {
+                        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+                    });
+                    setDoctorData(doctorResponse.data);
+                } else {
+                    setError("No user found!");
+                }
+            } catch (error) {
+                setError("There was an error fetching data!");
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        if (doctorData) {
+            const fetchPrescriptions = async () => {
+                try {
+                    const prescriptionsResponse = await axios.get('http://localhost:3001/getPrescriptionsDoctor', {
+                        params: { Doctor: doctorData.Username }
+                    });
+                    setPrescriptionData(prescriptionsResponse.data);
+                } catch (error) {
+                    console.error("There was an error fetching prescriptions!", error);
+                }
+            };
+
+            fetchPrescriptions();
+        }
+    }, [doctorData]);
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>{error}</div>;
+
     return (
         <div>
             <Sidebar pageWrapId={'page-wrap'} outerContainerId={'outer-container'} />
             <div className="p-6">
-                <h1 className="text-5xl text-black font-bold mt-8">Welcome, Dr. El-Gayar</h1>
-                <h2 className="text-lg text-gray-500 font-semibold mb-12">Lorem ipsum wkdvvmicvememrimvdvmr </h2>
+                <h1 className="text-5xl text-black font-bold mt-8">Welcome, Dr. {doctorData.Name}</h1>
+                <h2 className="text-lg text-gray-500 font-semibold mb-12">Patients and Prescriptions</h2>
                 {/* Flex container for two tables side by side */}
                 <div className="flex flex-wrap -mx-3">
                     {/* First table - My Patients */}
@@ -103,13 +146,6 @@ export default function DoctorDashboard() {
                                                 <td className="p-0">
                                                     <div className={`h-16 p-6`}>
                                                         <h5 className="text-sm font-medium text-gray-800">
-                                                            {row.username}
-                                                        </h5>
-                                                    </div>
-                                                </td>
-                                                <td className="p-0">
-                                                    <div className={`h-16 p-6`}>
-                                                        <h5 className="text-sm font-medium text-gray-800">
                                                             {row.name}
                                                         </h5>
                                                     </div>
@@ -131,24 +167,18 @@ export default function DoctorDashboard() {
                                                 <td className="p-0">
                                                     <div className={`h-16 p-6`}>
                                                         <span className="text-sm text-gray-800 font-medium">
-                                                            {row.Gender}
+                                                            {new Date(row.DOB).toLocaleDateString('en-GB', {
+                                                                day: 'numeric',
+                                                                month: 'long',
+                                                                year: 'numeric'
+                                                            })}
                                                         </span>
                                                     </div>
                                                 </td>
                                                 <td className="p-0">
                                                     <div className={`h-16 p-6`}>
                                                         <span className="text-sm text-gray-800 font-medium">
-                                                            {row.DOB}
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                                <td className="p-0">
-                                                    <div className={`flex h-16 p-6 items-center`}>
-                                                        <span
-                                                            className={`inline-block w-2 h-2 mr-1 rounded-full ${row.statusColor}`}
-                                                        ></span>
-                                                        <span className="text-sm font-medium text-gray-800">
-                                                            {row.status}
+                                                            {row.Gender}
                                                         </span>
                                                     </div>
                                                 </td>
@@ -180,7 +210,7 @@ export default function DoctorDashboard() {
                                 <table className="w-full min-w-max">
                                     <thead>
                                         <tr className="text-left">
-                                            {TABLE_HEADERS.map((header, index) => (
+                                            {PRES_HEADERS.map((header, index) => (
                                                 <th key={index} className="p-0">
                                                     <div
                                                         className={`py-3 px-6 ${index === 0
@@ -199,43 +229,26 @@ export default function DoctorDashboard() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {tableData.map((row, index) => (
+                                        {prescriptionData.map((row, index) => (
                                             <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                                                 <td className="p-0">
                                                     <div className={`h-16 p-6`}>
                                                         <h5 className="text-sm font-medium text-gray-800">
-                                                            {row.orderRef}
+                                                            {row.Doctor}
                                                         </h5>
                                                     </div>
                                                 </td>
                                                 <td className="p-0">
                                                     <div className={`h-16 p-6`}>
-                                                        <div className="flex h-full items-center">
-                                                            <img
-                                                                className="w-8 h-8 mr-3 rounded-full object-cover"
-                                                                src={row.customerImage}
-                                                                alt={row.customerName}
-                                                            />
-                                                            <span className="text-sm font-medium text-gray-800">
-                                                                {row.customerName}
-                                                            </span>
-                                                        </div>
+                                                        <h5 className="text-sm font-medium text-gray-800">
+                                                            {row.Patient}
+                                                        </h5>
                                                     </div>
                                                 </td>
                                                 <td className="p-0">
                                                     <div className={`h-16 p-6`}>
                                                         <span className="text-sm text-gray-800 font-medium">
-                                                            {row.date}
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                                <td className="p-0">
-                                                    <div className={`flex h-16 p-6 items-center`}>
-                                                        <span
-                                                            className={`inline-block w-2 h-2 mr-1 rounded-full ${row.statusColor}`}
-                                                        ></span>
-                                                        <span className="text-sm font-medium text-gray-800">
-                                                            {row.status}
+                                                            {row.Status}
                                                         </span>
                                                     </div>
                                                 </td>
@@ -287,44 +300,45 @@ export default function DoctorDashboard() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {tableData.map((row, index) => (
+                                    {patientData.map((row, index) => (
                                         <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                                             <td className="p-0">
                                                 <div className={`h-16 p-6`}>
                                                     <h5 className="text-sm font-medium text-gray-800">
-                                                        {row.orderRef}
+                                                        {row.name}
                                                     </h5>
                                                 </div>
                                             </td>
                                             <td className="p-0">
                                                 <div className={`h-16 p-6`}>
-                                                    <div className="flex h-full items-center">
-                                                        <img
-                                                            className="w-8 h-8 mr-3 rounded-full object-cover"
-                                                            src={row.customerImage}
-                                                            alt={row.customerName}
-                                                        />
-                                                        <span className="text-sm font-medium text-gray-800">
-                                                            {row.customerName}
-                                                        </span>
-                                                    </div>
+                                                    <h5 className="text-sm font-medium text-gray-800">
+                                                        {row.phoneNumber}
+                                                    </h5>
+                                                </div>
+                                            </td>
+                                            <td className="p-0">
+                                                <div className={`h-16 p-6`}>
+                                                    <h5 className="text-sm font-medium text-gray-800">
+                                                        {row.email}
+                                                    </h5>
                                                 </div>
                                             </td>
                                             <td className="p-0">
                                                 <div className={`h-16 p-6`}>
                                                     <span className="text-sm text-gray-800 font-medium">
-                                                        {row.date}
+                                                        {new Date(row.DOB).toLocaleDateString('en-GB', {
+                                                            day: 'numeric',
+                                                            month: 'long',
+                                                            year: 'numeric'
+                                                        })}
                                                     </span>
                                                 </div>
                                             </td>
                                             <td className="p-0">
-                                                <div className={`flex h-16 p-6 items-center`}>
-                                                    <span
-                                                        className={`inline-block w-2 h-2 mr-1 rounded-full ${row.statusColor}`}
-                                                    ></span>
-                                                    <span className="text-sm font-medium text-gray-800">
-                                                        {row.status}
-                                                    </span>
+                                                <div className={`h-16 p-6`}>
+                                                    <h5 className="text-sm font-medium text-gray-800">
+                                                        {row.Gender}
+                                                    </h5>
                                                 </div>
                                             </td>
                                         </tr>

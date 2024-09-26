@@ -48,9 +48,14 @@ const Sidebar = () => {
                     View Patients
                   </a>
                 </li>
-                <li className="nav-item pl-1 pr-4">
+                <li className="nav-item px-1">
                   <a className="nav-link" aria-current="page" href="/ViewSalesAdmin">
                     View Prescriptions
+                  </a>
+                </li>
+                <li className="nav-item pl-1 pr-4">
+                  <a className="nav-link" aria-current="page" href="/AddPrescriptions">
+                    Add Prescription
                   </a>
                 </li>
                 <li className="nav-item dropdown group relative">
